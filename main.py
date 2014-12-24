@@ -1,0 +1,90 @@
+__author__ = 'justin'
+import pygame
+import game_objects
+import interface
+import time
+
+WIDTH = 800
+HEIGHT = 600
+
+class Main(object):
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
+        self.clock = pygame.time.Clock()
+
+        self.player_sprite = pygame.sprite.Group()
+        self.health_sprite = pygame.sprite.Group()
+        self.player = game_objects.Ship(50, 10)
+        self.player_sprite.add(self.player)
+        self.player_bullets = pygame.sprite.Group()
+        self.enemy_cluster = game_objects.EnemyCluster(self.screen)
+        self.status = interface.StatusBar(self.player)
+
+    def _pause(self):
+        """Pauses the game (freeze game state) until player presses p"""
+        paused = True
+        save_s = self.screen.copy()
+        pause_text = interface.Text(WIDTH/2, HEIGHT/2, 30)
+        oldtime = 0
+        while paused:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        paused = False
+                if event.type == pygame.QUIT:
+                    raise SystemExit
+
+            if time.clock() - oldtime > 0.1:
+                self.screen.blit(save_s, (0, 0))
+            if time.clock() - oldtime > 0.2:
+                pause_text.render("Game Paused, Press P to continue playing")
+                oldtime = time.clock()
+
+            pygame.display.update()
+
+    def run(self):
+        while True:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT]:
+                self.player.left(5)
+            elif keys[pygame.K_RIGHT]:
+                self.player.right(5)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    raise SystemExit
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE and len(self.player_bullets.sprites())<6:
+                        self.player_bullets.add(self.player.shoot())
+                    elif event.key == pygame.K_p:
+                        self._pause()
+
+            self.screen.fill((255, 255, 255))
+            self.player_sprite.draw(self.screen)
+            self.player_bullets.update()
+            self.player_bullets.draw(self.screen)
+            self.enemy_cluster.update()
+            collide_player = pygame.sprite.groupcollide(self.enemy_cluster.get_ships(), self.player_bullets, False, True)
+            collide_enemy = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_bullets(), True)
+            collide_item = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_items(), True)
+            self.status.update()
+
+            if collide_player != {}:
+                for enemy in collide_player.iterkeys():
+                    if enemy.destroy():
+                        self.player.update_score(10)
+
+            if collide_enemy:
+                self.player.take_damage(10)
+
+            if collide_item:
+                for item in collide_item:
+                    if str(item) == "health":
+                        self.player.add_health(5)
+
+            self.clock.tick(60)
+            pygame.display.update()
+
+if __name__ == "__main__":
+    app = Main()
+    app.run()
