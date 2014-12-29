@@ -69,6 +69,7 @@ class StatusBar(object):
         self.ship = ship
         self.health = HealthBar2(self.ship, self.screen_w*0.75, self.screen_h*0.02, 175, 18)
         self.score = Text(self.screen_w*0.07, self.screen_h*0.04, 20)
+        self.ammo = Text(self.screen_w*0.25, self.screen_h*0.04, 20)
 
     def _update_health(self):
         """Updates the health_bar i.e. redraws it"""
@@ -78,8 +79,14 @@ class StatusBar(object):
         """Updates the status bar with new score"""
         self.score.render('SCORE: ' + str(self.ship.get_score()))
 
+    def _update_ammo(self):
+        """Updates the amount of ammo remaining"""
+        self.ammo.render('AMMO: ' + str(self.ship.get_ammo()))
+
     def update(self):
+        """Updates everything"""
         self._update_health()
         self._update_score()
+        self._update_ammo()
 
     #def score(self):

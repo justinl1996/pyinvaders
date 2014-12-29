@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/game_objects.py" line="187" mnemonic="0" />
+    <bookmark url="file://$PROJECT_DIR$/game_objects.py" line="201" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="511f00fa-01d7-4fee-b4b8-cfe17afec9e4" name="Default" comment="" />
+    <list default="true" id="511f00fa-01d7-4fee-b4b8-cfe17afec9e4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game_objects.py" afterPath="$PROJECT_DIR$/game_objects.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/interface.py" afterPath="$PROJECT_DIR$/interface.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="space_invaders.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,11 +35,8 @@
       <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="49" selection-start="3151" selection-end="3151" vertical-scroll-proportion="0.0" vertical-offset="1145" max-vertical-offset="1710">
-              <folding>
-                <element signature="e#22#35#0" expanded="true" />
-                <marker date="1419390134000" expanded="true" signature="1483:3220" placeholder="..." />
-              </folding>
+            <state line="46" column="0" selection-start="1484" selection-end="1484" vertical-scroll-proportion="0.0" vertical-offset="1026" max-vertical-offset="1656">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -41,7 +44,7 @@
       <file leaf-file-name="interface.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="42" selection-start="1882" selection-end="1882" vertical-scroll-proportion="0.0" vertical-offset="893" max-vertical-offset="1620">
+            <state line="61" column="0" selection-start="2248" selection-end="2248" vertical-scroll-proportion="0.0" vertical-offset="972" max-vertical-offset="1746">
               <folding />
             </state>
           </provider>
@@ -50,12 +53,8 @@
       <file leaf-file-name="game_objects.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game_objects.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="0" selection-start="2454" selection-end="2454" vertical-scroll-proportion="0.36486486" vertical-offset="1188" max-vertical-offset="4410">
-              <folding>
-                <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-                <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-                <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-              </folding>
+            <state line="38" column="0" selection-start="1185" selection-end="1185" vertical-scroll-proportion="0.39325842" vertical-offset="455" max-vertical-offset="4698">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,7 +62,7 @@
       <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="16" selection-start="188" selection-end="386" vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="594">
+            <state line="25" column="48" selection-start="710" selection-end="710" vertical-scroll-proportion="0.0" vertical-offset="316" max-vertical-offset="774">
               <folding />
             </state>
           </provider>
@@ -76,14 +75,22 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/ship.py" />
         <option value="$PROJECT_DIR$/interface.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/game_objects.py" />
+        <option value="$PROJECT_DIR$/test.py" />
       </list>
     </option>
   </component>
@@ -92,7 +99,7 @@
     <option name="width" value="1280" />
     <option name="height" value="746" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -118,7 +125,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -165,22 +171,23 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.game_objects">
     <configuration default="false" name="ship" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -230,6 +237,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="space_invaders" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="game_objects" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="space_invaders" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game_objects.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -356,16 +381,18 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.ship" />
       <item index="1" class="java.lang.String" itemvalue="Python.test" />
       <item index="2" class="java.lang.String" itemvalue="Python.main" />
+      <item index="3" class="java.lang.String" itemvalue="Python.game_objects" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.ship" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.game_objects" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.main" />
+        <item index="3" class="java.lang.String" itemvalue="Python.ship" />
       </list>
     </recent_temporary>
   </component>
@@ -397,17 +424,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1280" height="746" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16901408" sideWeight="0.79153097" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16901408" sideWeight="0.7931596" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20846905" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2068404" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2068404" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -435,11 +462,7 @@
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="109" column="0" selection-start="3450" selection-end="3450" vertical-scroll-proportion="0.0" vertical-offset="1962" max-vertical-offset="3168">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -451,11 +474,7 @@
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="139" column="51" selection-start="4407" selection-end="4407" vertical-scroll-proportion="0.0" vertical-offset="2529" max-vertical-offset="2988">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -467,11 +486,7 @@
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="114" column="27" selection-start="3549" selection-end="3549" vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="2232">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -483,11 +498,7 @@
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="68" column="14" selection-start="2039" selection-end="2039" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="1530">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -499,11 +510,7 @@
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="23" selection-start="1359" selection-end="1359" vertical-scroll-proportion="0.0" vertical-offset="828" max-vertical-offset="1170">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -524,36 +531,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="49" selection-start="3151" selection-end="3151" vertical-scroll-proportion="0.0" vertical-offset="1145" max-vertical-offset="1710">
-          <folding>
-            <element signature="e#22#35#0" expanded="true" />
-            <marker date="1419390134000" expanded="true" signature="1483:3220" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="16" selection-start="188" selection-end="386" vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="594">
+        <state line="46" column="0" selection-start="1484" selection-end="1484" vertical-scroll-proportion="0.0" vertical-offset="1026" max-vertical-offset="1656">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="42" selection-start="1882" selection-end="1882" vertical-scroll-proportion="0.0" vertical-offset="1001" max-vertical-offset="1620">
+        <state line="61" column="0" selection-start="2248" selection-end="2248" vertical-scroll-proportion="0.0" vertical-offset="964" max-vertical-offset="1746">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="48" selection-start="710" selection-end="710" vertical-scroll-proportion="0.0" vertical-offset="316" max-vertical-offset="774">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="0" selection-start="2454" selection-end="2454" vertical-scroll-proportion="0.36486486" vertical-offset="1188" max-vertical-offset="4410">
-          <folding>
-            <marker date="1419390262000" expanded="true" signature="3776:6624" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="4526:4593" placeholder="..." />
-            <marker date="1419390262000" expanded="true" signature="6660:8282" placeholder="..." />
-          </folding>
+        <state line="38" column="0" selection-start="1185" selection-end="1185" vertical-scroll-proportion="0.39325842" vertical-offset="455" max-vertical-offset="4698">
+          <folding />
         </state>
       </provider>
     </entry>
