@@ -24,7 +24,8 @@ def draw_bullet():
     image = pygame.Surface([6, 20], pygame.SRCALPHA)
     pygame.draw.circle(image, GOLD, (3, 3), 3, 1)
     pygame.draw.circle(image, GOLD, (3, 3), 3, 0)
-    pygame.draw.rect(image, J_GREEN, (0, 4, 6, 16))
+    pygame.draw.circle(image, GOLD, (3, 17), 3, 0)
+    pygame.draw.rect(image, J_GREEN, (0, 4, 6, 14))
     return image
 
 while True:

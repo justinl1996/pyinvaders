@@ -3,6 +3,8 @@ import pygame
 
 RED = (255,0,0)
 B_GREEN = (0,255,0)
+GOLD = (109, 109, 17)
+J_GREEN = (78, 101, 65)
 
 class HealthBar(pygame.sprite.Sprite):
     def __init__(self, ob, x, y, width, height):
@@ -81,7 +83,17 @@ class StatusBar(object):
 
     def _update_ammo(self):
         """Updates the amount of ammo remaining"""
-        self.ammo.render('AMMO: ' + str(self.ship.get_ammo()))
+        self.ammo.render("AMMO: ")
+        ammo = int(self.ship.get_ammo()/5) #No. of bullets to draw
+        ammo_i = pygame.Surface([150, 18], pygame.SRCALPHA)
+        for n in range(0, ammo):
+            temp = pygame.Surface([6, 18], pygame.SRCALPHA)
+            pygame.draw.circle(temp, GOLD, (3, 3), 3, 1)
+            pygame.draw.circle(temp, GOLD, (3, 3), 3, 0)
+            pygame.draw.rect(temp, J_GREEN, (0, 4, 6, 16))
+            ammo_i.blit(temp, (n*6, 0))
+        self.screen.blit(ammo_i, (self.screen_w*0.4-ammo_i.get_size()[0]/2, self.screen_h*0.04-ammo_i.get_size()[1]/2))
+        #self.ammo.render('AMMO: ' + str(self.ship.get_ammo()))
 
     def update(self):
         """Updates everything"""

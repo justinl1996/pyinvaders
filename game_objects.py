@@ -4,12 +4,14 @@ import time
 import random
 import interface
 
-RED = (255,0,0)
-WHITE = (255,255,255)
-GREEN = (0,200,0)
-B_GREEN = (0,255,0)
-BLUE = (120,120,230)
-D_BLUE = (120,120,100)
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 200, 0)
+B_GREEN = (0, 255, 0)
+BLUE = (120, 120, 230)
+D_BLUE = (120, 120, 100)
+GOLD = (109, 109, 17)
+J_GREEN = (78, 101, 65)
 
 class Ship(pygame.sprite.Sprite):
     """Class which represents the player's ship"""
@@ -40,7 +42,7 @@ class Ship(pygame.sprite.Sprite):
     def shoot(self):
         if self._ammo > 0:
             self._ammo -= 1
-            return Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, RED)
+            return Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3)
 
     def get_health(self):
         """Returns the amount of health remaining"""
@@ -61,7 +63,10 @@ class Ship(pygame.sprite.Sprite):
 
     def add_ammo(self, amount):
         """Increments the player's ammunition"""
-        self._ammo += amount
+        if self._ammo + amount < 150:
+            self._ammo += amount
+        else:
+            self._ammo = 150
 
     def decrement_ammo(self, amount):
         self._ammo -= amount
@@ -76,10 +81,10 @@ class Ship(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed, colour):
+    def __init__(self, x, y, speed):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
-        self.image = self._draw_bullet(colour)
+        self.image = self._draw_bullet(RED)
         self.rect = self.image.get_rect()
         self.rect.y = y-25
         self.rect.x = x
@@ -104,6 +109,11 @@ class Bullet(pygame.sprite.Sprite):
 
 class BulletDown(Bullet):
     """Class BulletUp inherits from Bullet. The method 'update' has been modified to move the bullet down"""
+
+    def __init__(self, x, y, speed):
+        Bullet.__init__(self, x, y, speed)
+        self.image = self._draw_bullet(D_BLUE)
+
     def update(self):
         """Updates position of bullet, i.e. moves it down. If it moves off the screen it is automatically destroyed"""
         self.rect.y += self.speed
@@ -122,8 +132,24 @@ class HealthPack(BulletDown):
         pygame.draw.rect(image, B_GREEN, (2, 8, 16, 4))
         return image
 
-    def __repr__(self):
+    def __str__(self):
         return "health"
+
+class AmmoPack(BulletDown):
+    """Class AmmoPack inherits from BulletDown"""
+
+    def _draw_bullet(self, colour):
+        image = pygame.Surface([18, 20], pygame.SRCALPHA)
+        for n in range(0, 3):
+            temp = pygame.Surface([6, 20], pygame.SRCALPHA)
+            pygame.draw.circle(temp, GOLD, (3, 3), 3, 1)
+            pygame.draw.circle(temp, GOLD, (3, 3), 3, 0)
+            pygame.draw.rect(temp, J_GREEN, (0, 4, 6, 16))
+            image.blit(temp, (n*6, 0))
+        return image
+
+    def __str__(self):
+        return "ammo"
 
 class EnemyCluster(object):
     """ This class groups together enemy ships, it is automatically populated"""
@@ -227,10 +253,13 @@ class Enemy(pygame.sprite.Sprite):
         if self.health <= 0:
             self.destroy_snd.play()
             self.kill()
-            ran = random.randint(1,5)
-            if ran==1:
-                self.parent.items.add(HealthPack(self.rect.x, self.rect.y, 2, D_BLUE))
+            ran = random.randint(1, 5)
+            if ran == 1:
+                self.parent.items.add(HealthPack(self.rect.x, self.rect.y, 2))
+            elif ran == 2 or ran == 3:
+                self.parent.items.add(AmmoPack(self.rect.x, self.rect.y, 2))
             return True
+
         return False
 
     def move(self, dirx, diry=0):
@@ -249,7 +278,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def shoot(self):
         """Shoots a bullet ie. Returns a bullet with start coordinate same as self"""
-        return BulletDown(self.rect.x+self.width/2, self.rect.y + self.height, 3, D_BLUE)
+        return BulletDown(self.rect.x+self.width/2, self.rect.y + self.height, 3)
 
     def get_health(self):
         """Returns the amount of a health"""

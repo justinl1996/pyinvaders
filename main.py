@@ -81,7 +81,8 @@ class Main(object):
                 for item in collide_item:
                     if str(item) == "health":
                         self.player.add_health(5)
-
+                    elif str(item) == "ammo":
+                        self.player.add_ammo(15)
             self.clock.tick(60)
             pygame.display.update()
 
