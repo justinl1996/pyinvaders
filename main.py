@@ -4,8 +4,8 @@ import game_objects
 import interface
 import time
 
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1024
+HEIGHT = 720
 
 class Main(object):
     def __init__(self):
@@ -43,6 +43,49 @@ class Main(object):
 
             pygame.display.update()
 
+    def _collision(self):
+            collide_player = pygame.sprite.groupcollide(self.enemy_cluster.get_ships(), self.player.get_bullets(), False, True)
+            collide_enemy = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_bullets(), True)
+            collide_item = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_items(), True)
+
+            if collide_player != {}:
+                for enemy in collide_player.iterkeys():
+                    row, col = enemy.get_pos()
+                    for bullet in collide_player[enemy]:
+                        if self.enemy_cluster.destroySelected(row, col, 5):
+                            self.player.update_score(10)
+                        if str(bullet) == "rocket":
+                            row, col = enemy.get_pos()
+                            count=0
+                            if col > 0: #destroy left side
+                                if self.enemy_cluster.destroySelected(row, col-1, 5):
+                                    count+=1
+                            if col < self.enemy_cluster.getRowCol()[1]-1:
+                                if self.enemy_cluster.destroySelected(row, col+1, 5):
+                                    count+=1
+                            if row > 0:
+                                if self.enemy_cluster.destroySelected(row-1, col, 5):
+                                    count+=1
+                            if row < self.enemy_cluster.getRowCol()[0]-1:
+                                if self.enemy_cluster.destroySelected(row+1, col, 5):
+                                    count+=1
+                            self.player.update_score(count*5)
+
+            if collide_enemy:
+                self.player.take_damage(10)
+
+            if collide_item:
+                for item in collide_item:
+                    if str(item) == "health":
+                        self.player.add_health(5)
+                    elif str(item) == "ammo":
+                        self.player.add_ammo(15)
+                    elif str(item) == "rocketitem":
+                        self.player.add_weapon("rocket")
+                    elif str(item) == "dual":
+                        self.player.add_weapon("dual")
+
+
     def run(self):
         while True:
             keys = pygame.key.get_pressed()
@@ -54,36 +97,21 @@ class Main(object):
                 if event.type == pygame.QUIT:
                     raise SystemExit
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE and len(self.player_bullets.sprites())<6:
-                        self.player_bullets.add(self.player.shoot())
+                    if event.key == pygame.K_SPACE: #and len(self.player_bullets.sprites())<6:
+                        self.player.shoot()
                     elif event.key == pygame.K_p:
                         self._pause()
+                    elif event.key == pygame.K_x:
+                        self.player.change_weapon()
 
             self.screen.fill((255, 255, 255))
             self.player_sprite.draw(self.screen)
-            self.player_bullets.update()
-            self.player_bullets.draw(self.screen)
+            self.player_sprite.update()
             self.enemy_cluster.update()
-            collide_player = pygame.sprite.groupcollide(self.enemy_cluster.get_ships(), self.player_bullets, False, True)
-            collide_enemy = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_bullets(), True)
-            collide_item = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_items(), True)
             self.status.update()
+            self._collision()
 
-            if collide_player != {}:
-                for enemy in collide_player.iterkeys():
-                    if enemy.destroy():
-                        self.player.update_score(10)
-
-            if collide_enemy:
-                self.player.take_damage(10)
-
-            if collide_item:
-                for item in collide_item:
-                    if str(item) == "health":
-                        self.player.add_health(5)
-                    elif str(item) == "ammo":
-                        self.player.add_ammo(15)
-            self.clock.tick(60)
+            self.clock.tick(80)
             pygame.display.update()
 
 if __name__ == "__main__":

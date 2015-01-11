@@ -1,10 +1,7 @@
 __author__ = 'justin'
 import pygame
+import colour
 
-RED = (255,0,0)
-B_GREEN = (0,255,0)
-GOLD = (109, 109, 17)
-J_GREEN = (78, 101, 65)
 
 class HealthBar(pygame.sprite.Sprite):
     def __init__(self, ob, x, y, width, height):
@@ -26,11 +23,11 @@ class HealthBar(pygame.sprite.Sprite):
 
     def update_bar(self):
         """Redraws the health bar"""
-        self.image.fill(RED)
+        self.image.fill(colour.RED)
         if self.ob.get_health() <= 0:
             self.kill()
         else:
-            self.image.fill(B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
+            self.image.fill(colour.B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
             self.screen.blit(self.image, (self.rect.x,self.rect.y))
 
 class HealthBar2(HealthBar):
@@ -41,10 +38,20 @@ class HealthBar2(HealthBar):
 
     def update_bar(self):
         """Redraws the health bar"""
-        self.image.fill(RED)
-        self.image.fill(B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
+        self.image.fill(colour.RED)
+        self.image.fill(colour.B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
         text = self.font_ob.render(str(float(self.ob.get_health())/self.total*100) + "%", True, (0, 0, 0))
+        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)
+
         self.image.blit(text, ((self.width/2)-(text.get_width()/2), 0))
+        self.screen.blit(self.image, (self.rect.x, self.rect.y))
+
+class AmmoBar(HealthBar):
+    def update_bar(self):
+        """Redraws ammunition bar"""
+        self.image.fill(colour.WHITE)
+        pygame.draw.rect(self.image, colour.J_GREEN, (0, 0, float(self.ob.get_ammo())/self.ob.get_ammolimit()*self.width, self.height))
+        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
@@ -70,35 +77,13 @@ class StatusBar(object):
         self.screen_h = self.screen.get_rect()[3]
         self.ship = ship
         self.health = HealthBar2(self.ship, self.screen_w*0.75, self.screen_h*0.02, 175, 18)
+        #self.healthText = Text(self.screen_w*0.70, self.screen_h*0.02, 20)
+        self.ammo = AmmoBar(self.ship, self.screen_w*0.50, self.screen_h*0.02, 175, 18)
+        #self.ammoText = Text(self.screen_w*0.25, self.screen_h*0.04, 20)
         self.score = Text(self.screen_w*0.07, self.screen_h*0.04, 20)
-        self.ammo = Text(self.screen_w*0.25, self.screen_h*0.04, 20)
-
-    def _update_health(self):
-        """Updates the health_bar i.e. redraws it"""
-        self.health.update_bar()
-
-    def _update_score(self):
-        """Updates the status bar with new score"""
-        self.score.render('SCORE: ' + str(self.ship.get_score()))
-
-    def _update_ammo(self):
-        """Updates the amount of ammo remaining"""
-        self.ammo.render("AMMO: ")
-        ammo = int(self.ship.get_ammo()/5) #No. of bullets to draw
-        ammo_i = pygame.Surface([150, 18], pygame.SRCALPHA)
-        for n in range(0, ammo):
-            temp = pygame.Surface([6, 18], pygame.SRCALPHA)
-            pygame.draw.circle(temp, GOLD, (3, 3), 3, 1)
-            pygame.draw.circle(temp, GOLD, (3, 3), 3, 0)
-            pygame.draw.rect(temp, J_GREEN, (0, 4, 6, 16))
-            ammo_i.blit(temp, (n*6, 0))
-        self.screen.blit(ammo_i, (self.screen_w*0.4-ammo_i.get_size()[0]/2, self.screen_h*0.04-ammo_i.get_size()[1]/2))
-        #self.ammo.render('AMMO: ' + str(self.ship.get_ammo()))
 
     def update(self):
         """Updates everything"""
-        self._update_health()
-        self._update_score()
-        self._update_ammo()
-
-    #def score(self):
+        self.ammo.update_bar()
+        self.health.update_bar()
+        self.score.render('SCORE: ' + str(self.ship.get_score()))
