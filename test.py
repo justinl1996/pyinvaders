@@ -1,6 +1,7 @@
 __author__ = 'justin'
 import pygame
 import colour
+import math
 
 WIDTH = 800
 HEIGHT = 600
@@ -46,14 +47,34 @@ def draw_rocketDrop():
     return image
 
 def draw_dual():
-    font_ob = pygame.font.SysFont('arial', 10)
+    font_ob = pygame.font.SysFont('arial', 12)
     text = font_ob.render("x2", True, (0, 0, 0))
     image = pygame.Surface((20, 20))
     image.fill(colour.SILVER)
     image.blit(text, (9, 6))
     pygame.draw.rect(image, colour.RED, (2, 4, 2, 12))
-    pygame.draw.rect(image, colour.RED, (6, 4, 2, 12))
+    pygame.draw.rect(image, colour.RED, (6, 5, 2, 12))
     return image
+
+def bullet_icon():
+    font_ob = pygame.font.SysFont('arial', 12)
+    text = font_ob.render("x1", True, (0, 0, 0))
+    image = pygame.Surface((20, 20))
+    image.fill(colour.SILVER)
+    image.blit(text, (7, 5))
+    pygame.draw.rect(image, colour.RED, (2, 4, 2, 12))
+    #image = pygame.transform.smoothscale(image, (100, 100))
+    #image = pygame.transform.scale(image, (25, 25))
+    return image
+
+def _draw_bullet():
+    """Draws the bullet shape onto the surface. Returns the surface"""
+    image = pygame.Surface([50, 50])
+    image.fill(colour.RED)
+    pygame.draw.rect(image, colour.BLACK, (5, 20, 10, 30))
+
+    return image
+
 
 while True:
     for event in pygame.event.get():
@@ -64,5 +85,8 @@ while True:
     #screen.blit(draw_health(),(WIDTH/2,HEIGHT/2))
     #screen.blit(draw_bullet(), (WIDTH/2, HEIGHT/2))
     #screen.blit(draw_ship(), (WIDTH/2, HEIGHT/2))
-    screen.blit(draw_dual(), (WIDTH/2, HEIGHT/2))
+    #screen.blit(_draw_bullet(), (WIDTH/2, HEIGHT/2))
+    screen.blit(pygame.transform.rotate(_draw_bullet(), -120), (WIDTH/2, HEIGHT/2))
+
+    #screen.blit(img, (WIDTH/2, HEIGHT/2))
     pygame.display.update()

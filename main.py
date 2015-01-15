@@ -3,6 +3,9 @@ import pygame
 import game_objects
 import interface
 import time
+import random
+import colour
+import textmsg
 
 WIDTH = 1024
 HEIGHT = 720
@@ -15,11 +18,26 @@ class Main(object):
 
         self.player_sprite = pygame.sprite.Group()
         self.health_sprite = pygame.sprite.Group()
-        self.player = game_objects.Ship(50, 10)
+        self.player = game_objects.Ship()
         self.player_sprite.add(self.player)
         self.player_bullets = pygame.sprite.Group()
         self.enemy_cluster = game_objects.EnemyCluster(self.screen)
-        self.status = interface.StatusBar(self.player)
+        self.statusTop = interface.TopStatusBar(self.player)
+        self.statusBot = interface.BotStatusBar()
+        #star locations for bg
+        self.stars = [[random.randrange(0,WIDTH-1), random.randrange(0,HEIGHT-1),
+                       random.randrange(1,4)] for _ in range(256)]
+
+    def bg_update(self):
+        """Redraws the background, run this prior to drawing game objects"""
+        self.screen.fill(colour.BLACK)
+        for star in self.stars:
+            if star[2] + star[1] > HEIGHT:
+                star[1] = 0
+            else:
+                star[1] += star[2]
+
+            self.screen.set_at((star[0], star[1]), colour.WHITE)
 
     def _pause(self):
         """Pauses the game (freeze game state) until player presses p"""
@@ -77,12 +95,18 @@ class Main(object):
             if collide_item:
                 for item in collide_item:
                     if str(item) == "health":
-                        self.player.add_health(5)
+                        amount = item.get_amount()
+                        self.player.add_health(amount)
+                        self.statusBot.display(textmsg.non_weapon(str(item), amount))
                     elif str(item) == "ammo":
-                        self.player.add_ammo(15)
+                        amount = item.get_amount()
+                        self.player.add_ammo(amount)
+                        self.statusBot.display(textmsg.non_weapon(str(item), amount))
                     elif str(item) == "rocketitem":
+                        self.statusBot.display(textmsg.msg[str(item)])
                         self.player.add_weapon("rocket")
                     elif str(item) == "dual":
+                        self.statusBot.display(textmsg.msg[str(item)])
                         self.player.add_weapon("dual")
 
 
@@ -103,12 +127,13 @@ class Main(object):
                         self._pause()
                     elif event.key == pygame.K_x:
                         self.player.change_weapon()
-
-            self.screen.fill((255, 255, 255))
+                        self.statusTop.new_equip()
+            self.bg_update()
             self.player_sprite.draw(self.screen)
             self.player_sprite.update()
             self.enemy_cluster.update()
-            self.status.update()
+            self.statusTop.update()
+            self.statusBot.update()
             self._collision()
 
             self.clock.tick(80)

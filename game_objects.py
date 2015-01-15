@@ -4,31 +4,27 @@ import time
 import random
 import interface
 import colour
+import sprites
+import math
 
 class Ship(pygame.sprite.Sprite):
     """Class which represents the player's ship"""
-    def __init__(self, width, height):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
-        self.image = pygame.Surface([50, 15], pygame.SRCALPHA)
-        self._draw_sprite(self.image)
+        self.image = sprites.ship()
         self.rect = self.image.get_rect()
         self.rect.y = 0.92*self.screen.get_rect()[3]
         self.height = 15
         self.width = 50
         self.rect.x = (self.screen.get_rect()[2] - self.width)/2
         self._health = 100  #Starting health
-        self._ammo_limits = {"bullet": 120, "rocket": 7, "spread": 25, "dual": 75}
+        self._ammo_limits = {"bullet": 120, "rocket": 7, "spread": 25, "dual": 75}  #Ammo limits
         self._ammo = {"bullet": 100, "rocket": 5, "spread": 20, "dual": 50}    #Starting ammo
         self._score = 0     #Starting score
         self._weapon = ["bullet"]   #Weapons the ship is equipped with
         self._cur_weapon = "bullet" #default weapon
         self._bullets = pygame.sprite.Group()
-
-    def _draw_sprite(self, image):
-        pygame.draw.rect(image, colour.RED, (15, 0, 20, 15))
-        pygame.draw.polygon(image, colour.BLUE, [(50, 15), (35, 25), (35, 0)])
-        pygame.draw.polygon(image, colour.BLUE, [(0, 15), (15, 0), (15, 15)])
 
     def right(self, amount):
         """Moves the ship in the right direction"""
@@ -45,6 +41,8 @@ class Ship(pygame.sprite.Sprite):
             self._ammo[self._cur_weapon] -= 1
             if self._cur_weapon == "bullet":
                 self._bullets.add(Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3))
+                #self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, 20))
+                #self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, -20))
             elif self._cur_weapon == "rocket":
                 self._bullets.add(Rocket(self.rect.x+self.width/2, self.rect.y, 3))
             elif self._cur_weapon == "dual":
@@ -63,6 +61,8 @@ class Ship(pygame.sprite.Sprite):
         """Increment the health of the ship by a given amount"""
         if amount + self._health <= 100:
             self._health += amount
+        else:
+            self._health = 100
 
     def get_ammo(self):
         """Returns the amount of ammo remaining"""
@@ -107,6 +107,10 @@ class Ship(pygame.sprite.Sprite):
         """Returns the weapon currently equipped"""
         return self._cur_weapon
 
+    def get_all_weapons(self):
+        """Returns all the weapons available for use"""
+        return self._weapon
+
     def change_weapon(self):
         if len(self._weapon) != 1:
             self._weapon.append(self._weapon.pop(0))
@@ -119,9 +123,11 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
         self.image = self._draw_bullet(colour.RED)
+
         self.rect = self.image.get_rect()
         self.rect.y = y - 12
         self.rect.x = x-self.rect.width/2
+
         self.speed = speed
 
     def play_sound(self):
@@ -131,7 +137,8 @@ class Bullet(pygame.sprite.Sprite):
     def _draw_bullet(self, col):
         """Draws the bullet shape onto the surface. Returns the surface"""
         image = pygame.Surface([2, 12])
-        pygame.draw.rect(image, col, (0, 0, 2, 12))
+        #pygame.draw.rect(image, col, (0, 0, 2, 12))
+        image.fill(col)
         return image
 
     def update(self):
@@ -143,13 +150,29 @@ class Bullet(pygame.sprite.Sprite):
     def __str__(self):
         return "bullet"
 
-class Rocket(Bullet):
+class AngleBullet(Bullet):
+    def __init__(self, x, y, speed, angle):
+        Bullet.__init__(self, x, y, speed)
+        self.angle = angle
+        self.image = pygame.transform.rotate(self.image, -angle)
+
     def _draw_bullet(self, col):
-        image = pygame.Surface([16,30], pygame.SRCALPHA)
-        pygame.draw.circle(image, colour.BLACK, (8, 8), 8, 0)
-        pygame.draw.rect(image, colour.BLACK, (0, 8, 16, 22))
+        """Draws the bullet shape onto the surface. Returns the surface"""
+        image = pygame.Surface([2, 12], pygame.SRCALPHA)
+        pygame.draw.rect(image, col, (0, 0, 2, 12))
         return image
 
+    def update(self):
+        self.rect.y -= self.speed * math.sin(math.pi/2-math.radians(self.angle))
+        self.rect.x += self.speed * math.cos(math.pi/2-math.radians(self.angle))
+        #print self.speed * math.cos(math.pi/2-math.radians(self.angle))
+        #print self.speed * math.sin(math.pi/2-math.radians(self.angle))
+        if self.rect.y < 0:
+            self.kill()
+
+class Rocket(Bullet):
+    def _draw_bullet(self, col):
+        return sprites.rocket()
     def __str__(self):
         return "rocket"
 
@@ -158,7 +181,7 @@ class BulletDown(Bullet):
 
     def __init__(self, x, y, speed):
         Bullet.__init__(self, x, y, speed)
-        self.image = self._draw_bullet(colour.D_BLUE)
+        self.image = self._draw_bullet(colour.CYAN)
 
     def update(self):
         """Updates position of bullet, i.e. moves it down. If it moves off the screen it is automatically destroyed"""
@@ -170,23 +193,19 @@ class HealthPack(BulletDown):
     """Class HealthPack inherits from BulletDown"""
     def _draw_bullet(self, _):
         """Draws a health pack"""
-        image = pygame.Surface([20, 20])
-        image.fill((61, 136, 3))
-        pygame.draw.rect(image, colour.B_GREEN, (8, 2, 4, 16))
-        pygame.draw.rect(image, colour.B_GREEN, (2, 8, 16, 4))
-        return image
+        return sprites.healthpack()
 
     def __str__(self):
         return "health"
 
+    def get_amount(self):
+        return random.randint(5,10)
+
 class RocketDrop(BulletDown):
+
     def _draw_bullet(self, _):
         """Draws the rocket drop"""
-        image = pygame.Surface((20, 20))
-        image.fill(colour.SILVER)
-        pygame.draw.rect(image, colour.BLACK, (5, 6, 10, 12))
-        pygame.draw.circle(image, colour.BLACK, (10, 6), 5, 0)
-        return image
+        return sprites.rocketdrop()
 
     def __str__(self):
         return "rocketitem"
@@ -195,28 +214,21 @@ class AmmoPack(BulletDown):
     """Class AmmoPack inherits from BulletDown"""
 
     def _draw_bullet(self, _):
-        image = pygame.Surface([18, 20], pygame.SRCALPHA)
-        for n in range(0, 3):
-            temp = pygame.Surface([6, 20], pygame.SRCALPHA)
-            pygame.draw.circle(temp, colour.GOLD, (3, 3), 3, 1)
-            pygame.draw.circle(temp, colour.GOLD, (3, 3), 3, 0)
-            pygame.draw.rect(temp, colour.J_GREEN, (0, 4, 6, 16))
-            image.blit(temp, (n*6, 0))
-        return image
+        return sprites.ammopack()
 
     def __str__(self):
         return "ammo"
 
+    def get_amount(self):
+        """Returns a random amount of ammo"""
+        return random.randint(5, 15)
+
+
 class DualBullet(BulletDown):
+
     def _draw_bullet(self, _):
         """Draws the rocket drop"""
-        text = pygame.font.SysFont('arial', 10).render("x2", True, (0, 0, 0))
-        image = pygame.Surface((20, 20))
-        image.fill(colour.SILVER)
-        image.blit(text, (9, 6))
-        pygame.draw.rect(image, colour.RED, (2, 4, 2, 12))
-        pygame.draw.rect(image, colour.RED, (6, 4, 2, 12))
-        return image
+        return sprites.dual_bullet()
 
     def __str__(self):
         return "dual"
@@ -267,7 +279,7 @@ class EnemyCluster(object):
 
     def _shoot(self):
         """Randomly selects a ship from the group and calls its shoot method"""
-        if time.clock() - self.old_time > 0.08:
+        if time.clock() - self.old_time > 0.5:
             #print "Selecting random ship"
             select = random.randint(0, len(self.enemies.sprites())-1)
             self.bullets.add(self.enemies.sprites()[select].shoot())
@@ -290,7 +302,7 @@ class EnemyCluster(object):
                 self.direction = -1
                 self.diry = 5
         else:
-            if self.center < 0.45*self.screen.get_rect()[2]:
+            if self.center < 0.40*self.screen.get_rect()[2]:
                 self.direction = 1
                 self.diry = 5
 
@@ -343,7 +355,7 @@ class Enemy(pygame.sprite.Sprite):
         if self.health <= 0:
             #self.destroy_snd.play()
             self.kill()
-            ran = random.randint(1, 5)
+            ran = random.randint(1, 8)
             if ran == 1:
                 self.parent.items.add(HealthPack(self.rect.x, self.rect.y, 2))
             elif ran == 2:
