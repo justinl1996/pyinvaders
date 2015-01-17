@@ -55,14 +55,16 @@ class AmmoBar(HealthBar):
         pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
-
 class Equip(object):
     def __init__(self, ship, x, y):
         self.screen = pygame.display.get_surface()
         self.ship = ship
         self.x = x
         self.y = y
-        self.defaults = {"bullet": sprites.bullet_icon(), "rocket": sprites.rocketdrop(), "dual":sprites.dual_bullet()}
+        self.defaults = {"bullet": sprites.bullet_icon(),
+                         "rocket": sprites.rocketdrop(),
+                         "dual": sprites.dual_bullet(),
+                         "default": sprites.startweponicon()}
         self.set_weapon()
 
     def set_weapon(self):
@@ -85,8 +87,15 @@ class Text(object):
 
     def render(self, text):
         """Redraws the text, call this to update"""
-        text_surface = self.font_ob.render(text, True, colour.WHITE)
-        self.screen.blit(text_surface, (self.x, self.y))
+        text_sf = self.font_ob.render(text, True, colour.WHITE)
+        self.screen.blit(text_sf, (self.x, self.y))
+
+class TextCenter(Text):
+    """Inherits for Text, TextCenter automatically center aligns text"""
+    def render(self, text):
+        """Redraws the text in center pos, call this to update"""
+        text_sf = self.font_ob.render(text, True, colour.WHITE)
+        self.screen.blit(text_sf, (self.x-text_sf.get_width()/2, self.y))
 
 
 class TopStatusBar(object):
@@ -97,9 +106,7 @@ class TopStatusBar(object):
         self.screen_h = self.screen.get_rect()[3]
         self.ship = ship
         self.health = HealthBar2(self.ship, self.screen_w*0.75, self.screen_h*0.02, 175, 18)
-        #self.healthText = Text(self.screen_w*0.70, self.screen_h*0.02, 20)
         self.ammo = AmmoBar(self.ship, self.screen_w*0.50, self.screen_h*0.02, 175, 18)
-        #self.ammoText = Text(self.screen_w*0.25, self.screen_h*0.04, 20)
         self.equip = Equip(self.ship, self.screen_w*0.30, self.screen_h*0.02)
         self.score = Text(self.screen_w*0.07, self.screen_h*0.02, 20)
 
@@ -113,6 +120,26 @@ class TopStatusBar(object):
         self.health.update_bar()
         self.equip.update()
         self.score.render('SCORE: ' + str(self.ship.get_score()))
+
+class ScrollText(object):
+    """Basic text class to represent scrolling text"""
+    def __init__(self, x, y, size, text, colour):
+        self.font_ob = pygame.font.SysFont('arial', size)
+        self.screen = pygame.display.get_surface()
+        self._x = x
+        self._y = y
+        self.origin = (x, y)
+        self._text_sf = self.font_ob.render(text, True, colour)
+
+    def move_y(self, amount):
+        """Moves the text by a given amount in the y-direction, and redraws the text"""
+        self._y += amount
+        self.screen.blit(self._text_sf, (self._x, self._y))
+
+    def distance_travel(self):
+        """Returns the difference in y coordinate from initialisation to present """
+        return self.origin[1] - self._y
+
 
 class BotStatusBar(object):
     def __init__(self):

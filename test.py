@@ -10,71 +10,23 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 clock = pygame.time.Clock()
 
+class ScrollText(object):
+    """Basic text class to represent scrolling text"""
+    def __init__(self, x, y, size, text, colour):
+        self.font_ob = pygame.font.SysFont('arial', size)
+        self.screen = pygame.display.get_surface()
+        self.x = x
+        self.y = y
+        self.text_sf = self.font_ob.render(text, True, colour)
 
-def draw_health():
-    image = pygame.Surface((20, 20), flags=pygame.SRCALPHA, depth=32)
-    image.fill((61, 136, 3))
-    pygame.draw.rect(image, colour.B_GREEN, (8, 2, 4, 16))
-    pygame.draw.rect(image, colour.B_GREEN, (2, 8, 16, 4))
-    return image
+    def move_y(self, amount):
+        """Moves the text by a given amount in the y-direction, and redraws the text"""
+        self.y += amount
+        self.screen.blit(self.text_sf, (self.x, self.y))
 
-def draw_bullet():
-    image = pygame.Surface([6, 20], pygame.SRCALPHA)
-    pygame.draw.circle(image, colour.GOLD, (3, 3), 3, 1)
-    pygame.draw.circle(image, colour.GOLD, (3, 3), 3, 0)
-    pygame.draw.circle(image, colour.GOLD, (3, 17), 3, 0)
-    pygame.draw.rect(image, colour.J_GREEN, (0, 4, 6, 14))
-    return image
+hello = ScrollText(500, 500, 10, "Hello")
 
-def draw_rocket():
-    image = pygame.Surface([16,30], pygame.SRCALPHA)
-    pygame.draw.circle(image, colour.BLACK, (8, 8), 8, 0)
-    pygame.draw.rect(image, colour.BLACK, (0, 8, 16, 22))
-    return image
-
-def draw_ship():
-    image = pygame.Surface([50, 15], pygame.SRCALPHA)
-    pygame.draw.rect(image, colour.RED, (15, 0, 20, 15))
-    pygame.draw.polygon(image, colour.BLUE, [(50, 15), (35, 25), (35, 0)])
-    pygame.draw.polygon(image, colour.BLUE, [(0, 15), (15, 0), (15, 15)])
-    return image
-
-def draw_rocketDrop():
-    image = pygame.Surface((20, 20))
-    image.fill(colour.SILVER)
-    pygame.draw.rect(image, colour.BLACK, (5, 6, 10, 12))
-    pygame.draw.circle(image, colour.BLACK, (10, 6), 5, 0)
-    return image
-
-def draw_dual():
-    font_ob = pygame.font.SysFont('arial', 12)
-    text = font_ob.render("x2", True, (0, 0, 0))
-    image = pygame.Surface((20, 20))
-    image.fill(colour.SILVER)
-    image.blit(text, (9, 6))
-    pygame.draw.rect(image, colour.RED, (2, 4, 2, 12))
-    pygame.draw.rect(image, colour.RED, (6, 5, 2, 12))
-    return image
-
-def bullet_icon():
-    font_ob = pygame.font.SysFont('arial', 12)
-    text = font_ob.render("x1", True, (0, 0, 0))
-    image = pygame.Surface((20, 20))
-    image.fill(colour.SILVER)
-    image.blit(text, (7, 5))
-    pygame.draw.rect(image, colour.RED, (2, 4, 2, 12))
-    #image = pygame.transform.smoothscale(image, (100, 100))
-    #image = pygame.transform.scale(image, (25, 25))
-    return image
-
-def _draw_bullet():
-    """Draws the bullet shape onto the surface. Returns the surface"""
-    image = pygame.Surface([50, 50])
-    image.fill(colour.RED)
-    pygame.draw.rect(image, colour.BLACK, (5, 20, 10, 30))
-
-    return image
-
+clock = pygame.time.Clock()
 
 while True:
     for event in pygame.event.get():
@@ -82,11 +34,14 @@ while True:
             raise SystemExit
 
     screen.fill((255, 255, 255))
+    hello.move_y(-1)
     #screen.blit(draw_health(),(WIDTH/2,HEIGHT/2))
     #screen.blit(draw_bullet(), (WIDTH/2, HEIGHT/2))
     #screen.blit(draw_ship(), (WIDTH/2, HEIGHT/2))
     #screen.blit(_draw_bullet(), (WIDTH/2, HEIGHT/2))
-    screen.blit(pygame.transform.rotate(_draw_bullet(), -120), (WIDTH/2, HEIGHT/2))
-
+    #screen.blit(pygame.transform.rotate(_draw_bullet(), -120), (WIDTH/2, HEIGHT/2))
+    #screen.blit(startIcon(), (WIDTH/2, HEIGHT/2))
     #screen.blit(img, (WIDTH/2, HEIGHT/2))
+
+    clock.tick(80)
     pygame.display.update()

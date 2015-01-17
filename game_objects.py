@@ -19,11 +19,11 @@ class Ship(pygame.sprite.Sprite):
         self.width = 50
         self.rect.x = (self.screen.get_rect()[2] - self.width)/2
         self._health = 100  #Starting health
-        self._ammo_limits = {"bullet": 120, "rocket": 7, "spread": 25, "dual": 75}  #Ammo limits
-        self._ammo = {"bullet": 100, "rocket": 5, "spread": 20, "dual": 50}    #Starting ammo
+        self._ammo_limits = {"bullet": 120, "rocket": 7, "spread": 25}  #Ammo limits
+        self._ammo = {"bullet": 100, "rocket": 5, "spread": 20}    #Starting ammo
         self._score = 0     #Starting score
-        self._weapon = ["bullet"]   #Weapons the ship is equipped with
-        self._cur_weapon = "bullet" #default weapon
+        self._weapon = ["bullet", "default"]   #Weapons the ship is equipped with
+        self._cur_weapon = "default" #default weapon
         self._bullets = pygame.sprite.Group()
 
     def right(self, amount):
@@ -37,17 +37,18 @@ class Ship(pygame.sprite.Sprite):
             self.rect.x -= amount
 
     def shoot(self):
-        if self._ammo[self._cur_weapon] > 0:
-            self._ammo[self._cur_weapon] -= 1
-            if self._cur_weapon == "bullet":
-                self._bullets.add(Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3))
-                #self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, 20))
-                #self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, -20))
-            elif self._cur_weapon == "rocket":
-                self._bullets.add(Rocket(self.rect.x+self.width/2, self.rect.y, 3))
-            elif self._cur_weapon == "dual":
-                self._bullets.add(Bullet(self.rect.x+self.width/2 - 4, self.rect.y + self.height, 3))
-                self._bullets.add(Bullet(self.rect.x+self.width/2 + 4, self.rect.y + self.height, 3))
+        if self._cur_weapon == "bullet" and self._ammo["bullet"] > 0:
+            self._bullets.add(Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3))
+            self._ammo["bullet"] -= 1
+        elif self._cur_weapon == "default":
+            self._bullets.add(StartWeapon(self.rect.x+self.width/2, self.rect.y + self.height, 3))
+        elif self._cur_weapon == "rocket" and self._ammo["rocket"] > 0:
+            self._bullets.add(Rocket(self.rect.x+self.width/2, self.rect.y, 3))
+            self._ammo["rocket"] -= 1
+        elif self._cur_weapon == "dual" and self._ammo["bullet"] > 0:
+            self._bullets.add(Bullet(self.rect.x+self.width/2 - 4, self.rect.y + self.height, 3))
+            self._bullets.add(Bullet(self.rect.x+self.width/2 + 4, self.rect.y + self.height, 3))
+            self._ammo["bullet"] -= 2
 
     def get_health(self):
         """Returns the amount of health remaining"""
@@ -66,18 +67,27 @@ class Ship(pygame.sprite.Sprite):
 
     def get_ammo(self):
         """Returns the amount of ammo remaining"""
-        return self._ammo[self._cur_weapon]
+        if self._cur_weapon == "dual":
+            return self._ammo["bullet"]
+        elif self._cur_weapon == "default":
+            return 1    #Constant
+        else:
+            return self._ammo[self._cur_weapon]
 
     def get_ammolimit(self):
         """Returns the ammo limit for the equipped weapon"""
+        if self._cur_weapon == "dual":
+            return self._ammo_limits["bullet"]
+        elif self._cur_weapon == "default":
+            return 1
         return self._ammo_limits[self._cur_weapon]
 
-    def add_ammo(self, amount):
+    def add_ammo(self, weapon, amount):
         """Increments the player's ammunition"""
-        if self._ammo[self._cur_weapon] + amount < self._ammo_limits[self._cur_weapon]:
-            self._ammo[self._cur_weapon] += amount
+        if self._ammo[weapon] + amount < self._ammo_limits[weapon]:
+            self._ammo[weapon] += amount
         else:
-            self._ammo[self._cur_weapon] = self._ammo_limits[self._cur_weapon]
+            self._ammo[weapon] = self._ammo_limits[weapon]
 
     def decrement_ammo(self, amount, weapon):
         self._ammo[weapon] -= amount
@@ -123,11 +133,9 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
         self.image = self._draw_bullet(colour.RED)
-
         self.rect = self.image.get_rect()
         self.rect.y = y - 12
         self.rect.x = x-self.rect.width/2
-
         self.speed = speed
 
     def play_sound(self):
@@ -147,16 +155,32 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.y < 0:
             self.kill()
 
+    def get_damage(self):
+        """Returns the amount of damage this weapon will do"""
+        return 5
+
     def __str__(self):
         return "bullet"
 
-class AngleBullet(Bullet):
+class StartWeapon(Bullet):
+    """Default weapon, does not consume ammunition"""
+    def _draw_bullet(self, _):
+        return sprites.startweapon()
+
+    def get_damage(self):
+        return 1
+
+    def __str__(self):
+        return "default"
+
+
+class AngleBullet(Bullet):          #Not used
     def __init__(self, x, y, speed, angle):
         Bullet.__init__(self, x, y, speed)
         self.angle = angle
         self.image = pygame.transform.rotate(self.image, -angle)
 
-    def _draw_bullet(self, col):
+    def _draw_bullet(self):
         """Draws the bullet shape onto the surface. Returns the surface"""
         image = pygame.Surface([2, 12], pygame.SRCALPHA)
         pygame.draw.rect(image, col, (0, 0, 2, 12))
@@ -171,7 +195,7 @@ class AngleBullet(Bullet):
             self.kill()
 
 class Rocket(Bullet):
-    def _draw_bullet(self, col):
+    def _draw_bullet(self, _):
         return sprites.rocket()
     def __str__(self):
         return "rocket"
@@ -202,7 +226,6 @@ class HealthPack(BulletDown):
         return random.randint(5,10)
 
 class RocketDrop(BulletDown):
-
     def _draw_bullet(self, _):
         """Draws the rocket drop"""
         return sprites.rocketdrop()
@@ -212,7 +235,6 @@ class RocketDrop(BulletDown):
 
 class AmmoPack(BulletDown):
     """Class AmmoPack inherits from BulletDown"""
-
     def _draw_bullet(self, _):
         return sprites.ammopack()
 
@@ -225,7 +247,6 @@ class AmmoPack(BulletDown):
 
 
 class DualBullet(BulletDown):
-
     def _draw_bullet(self, _):
         """Draws the rocket drop"""
         return sprites.dual_bullet()
@@ -236,19 +257,23 @@ class DualBullet(BulletDown):
 
 class EnemyCluster(object):
     """ This class groups together enemy ships, it is automatically populated"""
-    def __init__(self, draw_screen):
+    def __init__(self, draw_screen, speed=1):
         self.screen = pygame.display.get_surface()
         self.enemies = pygame.sprite.Group()
         self.health_bars = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
         self._enemieslst = []
+        self.count = 0 #No. of enemy ships
         self._populate()
-        self.direction = 1 # 1=right, -1=left
-        self.diry = 0 # 1=down 0=no vertical movement
+
         self.screen = draw_screen
         self.center = self.screen.get_rect()[2]/2
         self.old_time = time.clock()
+        self.speed = speed
+        self.diry = 0 # 1=down 0=no vertical movement
+        self.dirx = self.speed # 1=right, -1=left
+
 
     def get_ships(self):
         """Returns the group of enemy ships contained in this cluster"""
@@ -275,11 +300,12 @@ class EnemyCluster(object):
                 self._enemieslst[-1].append(temp)
                 self.health_bars.add(interface.HealthBar(temp, x, y, 30, 4))
                 self.enemies.add(temp)
+                self.count += 1
 
 
     def _shoot(self):
         """Randomly selects a ship from the group and calls its shoot method"""
-        if time.clock() - self.old_time > 0.5:
+        if time.clock() - self.old_time > 0.25 * self.speed:
             #print "Selecting random ship"
             select = random.randint(0, len(self.enemies.sprites())-1)
             self.bullets.add(self.enemies.sprites()[select].shoot())
@@ -288,7 +314,8 @@ class EnemyCluster(object):
     def _move_ships(self):
         """Updates the ship's position"""
         for ship in self.enemies.sprites():
-            ship.move(self.direction, self.diry)
+            ship.move(self.dirx, self.diry)
+        #print self.direction
         self.diry = 0
 
     def _move_health(self):
@@ -297,16 +324,16 @@ class EnemyCluster(object):
             h.move()
 
     def update(self):
-        if self.direction == 1:
+        if self.dirx > 0:
             if self.center > 0.60*self.screen.get_rect()[2]:
-                self.direction = -1
+                self.dirx = -self.speed
                 self.diry = 5
         else:
             if self.center < 0.40*self.screen.get_rect()[2]:
-                self.direction = 1
+                self.dirx = self.speed
                 self.diry = 5
 
-        self.center += self.direction
+        self.center += self.dirx
         self._move_ships()
         self._move_health()
         self.enemies.draw(self.screen)
@@ -327,9 +354,14 @@ class EnemyCluster(object):
         """
 
         if self._enemieslst[row][col].get_health() > 0 and self._enemieslst[row][col].destroy(amount):
+            self.count -= 1
             return True
         else:
             return False
+
+    def ships_remaining(self):
+        """Return the no. of ships remaining"""
+        return self.count
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -353,7 +385,6 @@ class Enemy(pygame.sprite.Sprite):
         """Plays the destruction sound of the enemy ship, returns true if enemy is destroyed"""
         self.health -= amount
         if self.health <= 0:
-            #self.destroy_snd.play()
             self.kill()
             ran = random.randint(1, 8)
             if ran == 1:
@@ -366,7 +397,6 @@ class Enemy(pygame.sprite.Sprite):
                 self.parent.items.add(RocketDrop(self.rect.x, self.rect.y, 2))
 
             return True
-
         return False
 
     def move(self, dirx, diry=0):
