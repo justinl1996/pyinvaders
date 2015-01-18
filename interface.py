@@ -126,10 +126,10 @@ class ScrollText(object):
     def __init__(self, x, y, size, text, colour):
         self.font_ob = pygame.font.SysFont('arial', size)
         self.screen = pygame.display.get_surface()
-        self._x = x
-        self._y = y
         self.origin = (x, y)
-        self._text_sf = self.font_ob.render(text, True, colour)
+        self._text_sf = self.font_ob.render(str(text), True, colour)
+        self._x = x - self._text_sf.get_width()/2
+        self._y = y
 
     def move_y(self, amount):
         """Moves the text by a given amount in the y-direction, and redraws the text"""

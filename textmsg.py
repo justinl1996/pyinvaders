@@ -6,7 +6,8 @@ msg = {
     "rocketitem": "Rocket Launcher Obtained",
     "rockets":"Rockets Obtained",
     "dual": "Dual Gun Attachment Obtained",
-    "damage": "Damage Taken"
+    "damage": "Damage Taken",
+    "speed": "Speed"
 }
 
 #def non_weapon(type, amount):

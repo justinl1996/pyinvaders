@@ -83,4 +83,12 @@ def startweponicon():
     pygame.draw.circle(image, colour.BLUE, (10, 10), 4, 0)
     return image
 
+def speedboost():
+    """Draws the item drop for the speed boost"""
+    image = pygame.Surface([20, 20])
+    image.fill(colour.SILVER)
+    pygame.draw.polygon(image, colour.YELLOW, [(0, 15), (10, 4), (20, 15)])
+    pygame.draw.polygon(image, colour.SILVER, [(0, 19), (10, 9), (20, 19)])
+    return image
+
 #WEAPON_ICON = {"bullet": bullet_icon(),"rocket": rocketdrop(),"dual":dual_bullet()}

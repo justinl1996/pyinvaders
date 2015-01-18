@@ -25,18 +25,28 @@ class Ship(pygame.sprite.Sprite):
         self._weapon = ["bullet", "default"]   #Weapons the ship is equipped with
         self._cur_weapon = "default" #default weapon
         self._bullets = pygame.sprite.Group()
+        self._speed = 2  #initial starting speed
 
-    def right(self, amount):
-        """Moves the ship in the right direction"""
+    def right(self):
+        """Moves the ship in the right direction, with the amount given by the self._speed"""
         if self.rect.x + self.width < self.screen.get_rect()[2]:
-            self.rect.x += amount
+            self.rect.x += self._speed
 
-    def left(self, amount):
+    def left(self):
         """Moves the ship in the left direction"""
         if self.rect.x > 0:
-            self.rect.x -= amount
+            self.rect.x -= self._speed
+
+    def getx(self):
+        """Return the x-coordinate of the center of ship"""
+        return self.rect.x+self.width/2
+
+    def gety(self):
+        """Return the y-coordinate of the center of ship"""
+        return self.rect.y-self.height/2
 
     def shoot(self):
+        """Adds a Bullet or Rocket to the bullets group"""
         if self._cur_weapon == "bullet" and self._ammo["bullet"] > 0:
             self._bullets.add(Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3))
             self._ammo["bullet"] -= 1
@@ -122,11 +132,22 @@ class Ship(pygame.sprite.Sprite):
         return self._weapon
 
     def change_weapon(self):
+        """Reshuffles the weapons' list, putting the first weapon at the back of list
+        and setting the current weapon to be the first element in the list
+        """
         if len(self._weapon) != 1:
             self._weapon.append(self._weapon.pop(0))
-            self._cur_weapon =  self._weapon[0]
-            print self._cur_weapon
+            self._cur_weapon = self._weapon[0]
+            #print self._cur_weapon
 
+    def get_speed(self):
+        """Returns the current speed of ship"""
+        return self._speed
+
+    def add_speed(self):
+        """Increments the speed by 1 provided self._speed < 10  """
+        if self._speed < 10:
+            self._speed += 1
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, speed):
@@ -245,6 +266,16 @@ class AmmoPack(BulletDown):
         """Returns a random amount of ammo"""
         return random.randint(5, 15)
 
+class SpeedBoost(BulletDown):
+    def _draw_bullet(self, _):
+        return sprites.speedboost()
+
+    def __str__(self):
+        return "speed"
+
+    def get_amount(self):
+        """Return the boost in speed value"""
+        return 1
 
 class DualBullet(BulletDown):
     def _draw_bullet(self, _):
@@ -395,7 +426,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.parent.items.add(DualBullet(self.rect.x, self.rect.y, 2))
             elif ran == 4:
                 self.parent.items.add(RocketDrop(self.rect.x, self.rect.y, 2))
-
+            elif ran == 5:
+                self.parent.items.add(SpeedBoost(self.rect.x, self.rect.y, 2))
             return True
         return False
 

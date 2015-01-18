@@ -24,7 +24,13 @@ class ScrollText(object):
         self.y += amount
         self.screen.blit(self.text_sf, (self.x, self.y))
 
-hello = ScrollText(500, 500, 10, "Hello")
+def speedboost():
+    image = pygame.Surface([20, 20])
+    image.fill(colour.SILVER)
+    pygame.draw.polygon(image, colour.YELLOW, [(0, 15), (10, 4), (20, 15)])
+    pygame.draw.polygon(image, colour.SILVER, [(0, 19), (10, 9), (20, 19)])
+    return image
+
 
 clock = pygame.time.Clock()
 
@@ -34,14 +40,7 @@ while True:
             raise SystemExit
 
     screen.fill((255, 255, 255))
-    hello.move_y(-1)
-    #screen.blit(draw_health(),(WIDTH/2,HEIGHT/2))
-    #screen.blit(draw_bullet(), (WIDTH/2, HEIGHT/2))
-    #screen.blit(draw_ship(), (WIDTH/2, HEIGHT/2))
-    #screen.blit(_draw_bullet(), (WIDTH/2, HEIGHT/2))
-    #screen.blit(pygame.transform.rotate(_draw_bullet(), -120), (WIDTH/2, HEIGHT/2))
-    #screen.blit(startIcon(), (WIDTH/2, HEIGHT/2))
-    #screen.blit(img, (WIDTH/2, HEIGHT/2))
+    screen.blit(speedboost(), (WIDTH/2, HEIGHT/2))
 
     clock.tick(80)
     pygame.display.update()

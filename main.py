@@ -37,13 +37,12 @@ class Main(object):
                 star[1] = 0
             else:
                 star[1] += star[2]
-
             self.screen.set_at((star[0], star[1]), colour.WHITE)
 
     def text_update(self):
         """Updates all scrolling Text and removes them if necessary"""
         for t in self.text:
-            if t.distance_travel() > 50:
+            if t.distance_travel() > 70 :
                 del t
             else:
                 t.move_y(-1)
@@ -102,17 +101,24 @@ class Main(object):
         if collide_enemy:
             for bullet in collide_enemy:
                 amount = bullet.get_damage()
+                self.player.update_score(-5)
                 self.player.take_damage(amount)
                 self.statusBot.display(textmsg.take_damage(amount))
+                self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "-" + str(amount), colour.RED ))
 
         if collide_item:
             for item in collide_item:
                 if str(item) == "health":
                     amount = item.get_amount()
                     self.player.add_health(amount)
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "+" + str(amount), colour.GREEN))
                     self.statusBot.display(textmsg.non_weapon(str(item), amount))
                 elif str(item) == "ammo":
                     amount = item.get_amount()
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "+" + str(amount), colour.J_GREEN))
                     self.player.add_ammo('bullet', amount)
                     self.statusBot.display(textmsg.non_weapon(str(item), amount))
                 elif str(item) == "rocketitem":
@@ -122,6 +128,8 @@ class Main(object):
                     else:
                         self.player.add_ammo("rocket", 3)
                         self.statusBot.display(textmsg.rocket_ammo(3))
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "+" + str(3), colour.GREY))
                 elif str(item) == "dual":
                     if "dual" not in self.player.get_all_weapons():
                         self.statusBot.display(textmsg.msg[str(item)])
@@ -129,13 +137,23 @@ class Main(object):
                     else:
                         self.player.add_ammo("bullet", 20)
                         self.statusBot.display(textmsg.non_weapon("ammo", 20))
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "+" + str(3), colour.J_GREEN))
+
+                elif str(item) == "speed":
+                    self.player.add_speed()
+                    self.statusBot.display(textmsg.non_weapon("speed", 1))
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
+                                                          20, "1+ " + "speed boost", colour.YELLOW ))
+
+
     def run(self):
         while self.enemy_cluster.ships_remaining() > 0:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT]:
-                self.player.left(5)
+                self.player.left()
             elif keys[pygame.K_RIGHT]:
-                self.player.right(5)
+                self.player.right()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     raise SystemExit
