@@ -5,7 +5,6 @@ import interface
 import time
 import random
 import colour
-import textmsg
 
 WIDTH = 1024
 HEIGHT = 720
@@ -15,21 +14,21 @@ class Main(object):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
         self.clock = pygame.time.Clock()
-
+        self.sound = interface.SoundEffects()
         self.player_sprite = pygame.sprite.Group()
         self.health_sprite = pygame.sprite.Group()
-        self.player = game_objects.Ship()
+        self.player = game_objects.Ship(self.sound)
         self.player_sprite.add(self.player)
         self.player_bullets = pygame.sprite.Group()
-        self.enemy_cluster = game_objects.EnemyCluster(self.screen)
+        self.enemy_cluster = game_objects.EnemyCluster(self.screen, self.sound)
         self.statusTop = interface.TopStatusBar(self.player)
-        self.statusBot = interface.BotStatusBar()
         #star locations for bg
         self.text = []
+
         self.stars = [[random.randrange(0, WIDTH-1), random.randrange(0,HEIGHT-1),
                        random.randrange(1, 4)] for _ in range(256)]
 
-    def bg_update(self):
+    def _bg_update(self):
         """Redraws the background, run this prior to drawing game objects"""
         self.screen.fill(colour.BLACK)
         for star in self.stars:
@@ -39,13 +38,21 @@ class Main(object):
                 star[1] += star[2]
             self.screen.set_at((star[0], star[1]), colour.WHITE)
 
-    def text_update(self):
+    def _text_update(self):
         """Updates all scrolling Text and removes them if necessary"""
         for t in self.text:
             if t.distance_travel() > 70 :
                 del t
             else:
                 t.move_y(-1)
+
+    def _game_state(self):
+        """checks to see if player has won -> return True. Otherwise return False"""
+        if self.enemy_cluster.ships_remaining() == 0 or self.player.get_health() <= 0:
+            return False
+        else:
+            return True
+
 
     def _pause(self):
         """Pauses the game (freeze game state) until player presses p"""
@@ -74,12 +81,14 @@ class Main(object):
         collide_player = pygame.sprite.groupcollide(self.enemy_cluster.get_ships(), self.player.get_bullets(), False, True)
         collide_enemy = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_bullets(), True)
         collide_item = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_items(), True)
+        collide_enemyplayer = pygame.sprite.spritecollide(self.player, self.enemy_cluster.get_ships(), False)
+        collide_shield = pygame.sprite.groupcollide(self.player.get_shield(), self.enemy_cluster.get_bullets(), True, True)
 
-        if collide_player != {}:
+        if collide_player != {}:    #When bullet collides with enemy ship
             for enemy in collide_player.iterkeys():
                 row, col = enemy.get_pos()
                 for bullet in collide_player[enemy]:
-                    damage = bullet.get_damage()
+                    damage = bullet.get_amount()
                     if self.enemy_cluster.destroySelected(row, col, damage):
                         self.player.update_score(10)
                     if str(bullet) == "rocket":
@@ -98,57 +107,84 @@ class Main(object):
                             if self.enemy_cluster.destroySelected(row+1, col, damage):
                                 count += 1
                         self.player.update_score(count*5)
-        if collide_enemy:
+
+        if collide_enemy:   #When enemy bullet collides with player
             for bullet in collide_enemy:
-                amount = bullet.get_damage()
+                amount = bullet.get_amount()
                 self.player.update_score(-5)
                 self.player.take_damage(amount)
-                self.statusBot.display(textmsg.take_damage(amount))
                 self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
                                                           20, "-" + str(amount), colour.RED ))
 
-        if collide_item:
+        if collide_item:    #When item collides with player 
             for item in collide_item:
+                amount = item.get_amount()
                 if str(item) == "health":
-                    amount = item.get_amount()
+                    self.sound.play_powerup("health")
                     self.player.add_health(amount)
-                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "+" + str(amount), colour.GREEN))
-                    self.statusBot.display(textmsg.non_weapon(str(item), amount))
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.GREEN))
                 elif str(item) == "ammo":
-                    amount = item.get_amount()
-                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "+" + str(amount), colour.J_GREEN))
+                    self.sound.play_powerup("ammo")
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.J_GREEN))
                     self.player.add_ammo('bullet', amount)
-                    self.statusBot.display(textmsg.non_weapon(str(item), amount))
+
                 elif str(item) == "rocketitem":
                     if "rocket" not in self.player.get_all_weapons():
-                        self.statusBot.display(textmsg.msg[str(item)])
+                        self.sound.play_powerup("weapon")
                         self.player.add_weapon("rocket")
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                        20, item.get_text1(), colour.GREY))
                     else:
-                        self.player.add_ammo("rocket", 3)
-                        self.statusBot.display(textmsg.rocket_ammo(3))
-                        self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "+" + str(3), colour.GREY))
+                        self.sound.play_powerup("ammo")
+                        self.player.add_ammo("rocket", amount)
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                        20, item.get_text2(), colour.GREY))
                 elif str(item) == "dual":
                     if "dual" not in self.player.get_all_weapons():
-                        self.statusBot.display(textmsg.msg[str(item)])
+                        self.sound.play_powerup("weapon")
                         self.player.add_weapon("dual")
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.RED))
+
                     else:
+                        self.sound.play_powerup("ammo")
                         self.player.add_ammo("bullet", 20)
-                        self.statusBot.display(textmsg.non_weapon("ammo", 20))
-                        self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "+" + str(3), colour.J_GREEN))
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text2(), colour.J_GREEN))
+
+                elif str(item) == "spread":
+                    if "spread" not in self.player.get_all_weapons():
+                        self.sound.play_powerup("weapon")
+                        self.player.add_weapon("spread")
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.BLUE))
+                    else:
+                        self.sound.play_powerup("ammo")
+                        self.player.add_ammo("spread", amount)
+                        self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text2(), colour.BLUE))
 
                 elif str(item) == "speed":
+                    self.sound.play_powerup("speed")
                     self.player.add_speed()
-                    self.statusBot.display(textmsg.non_weapon("speed", 1))
-                    self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "1+ " + "speed boost", colour.YELLOW ))
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.YELLOW))
 
+                elif str(item) == "orb":
+                    self.sound.play_powerup("shield")
+                    self.player.add_orb()
+                    self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
+                                                          20, item.get_text1(), colour.WHITE))
+        if collide_enemyplayer:         #Enemy ship collides with the player ship
+            self.player.take_damage(100)
+
+        if collide_shield:
+            self.player.delete_orb()
 
     def run(self):
-        while self.enemy_cluster.ships_remaining() > 0:
+        while self._game_state():
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT]:
                 self.player.left()
@@ -166,13 +202,12 @@ class Main(object):
                         self.player.change_weapon()
                         self.statusTop.new_equip()
 
-            self.bg_update()
-            self.text_update()
+            self._bg_update()
+            self._text_update()
             self.player_sprite.draw(self.screen)
             self.player_sprite.update()
             self.enemy_cluster.update()
             self.statusTop.update()
-            self.statusBot.update()
             self._collision()
             self.clock.tick(80)
             pygame.display.update()

@@ -31,16 +31,60 @@ def speedboost():
     pygame.draw.polygon(image, colour.SILVER, [(0, 19), (10, 9), (20, 19)])
     return image
 
+def spread_icon():
+    """Draws the icon representing the spread weapon (3x dot bullet)"""
+    text = pygame.font.SysFont('arial', 10).render("x3", True, (0, 0, 0))
+    image = pygame.Surface([20, 20])
+    image.fill(colour.SILVER)
+    image.blit(text, (10, 8))
+    pygame.draw.circle(image, colour.BLUE, (6, 10), 4, 0)
+    return image
+
+
+def invader():
+    image = pygame.Surface([30, 25], pygame.SRCALPHA)
+    pygame.draw.rect(image, colour.BLUE, (5, 0, 20, 20))
+    pygame.draw.rect(image, colour.BLACK, (7, 5, 4, 4))
+    pygame.draw.rect(image, colour.BLACK, (19, 5, 4, 4))
+    pygame.draw.rect(image, colour.BLACK, (10, 13, 10, 4))
+    pygame.draw.rect(image, colour.BLUE, (0, 15, 5, 15))
+    pygame.draw.rect(image, colour.BLUE, (25, 15, 5, 10))
+    return image
+
+def orb():
+    image = pygame.Surface([16, 16], pygame.SRCALPHA)
+    pygame.draw.circle(image, colour.BLACK, (8, 8), 8, 0)
+    return image
+
+def shield_drop():
+    image = pygame.Surface([10, 10], pygame.SRCALPHA)
+    pygame.draw.circle(image, colour.BLUE, (5, 5), 5, 0)
+    pygame.draw.circle(image, colour.WHITE, (5, 5), 3, 0)
+    return image
+
 
 clock = pygame.time.Clock()
+
+orb_img = orb()
+time = 0
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             raise SystemExit
+    time += 0.05
+    if time > 1000:
+        time = 0
 
-    screen.fill((255, 255, 255))
-    screen.blit(speedboost(), (WIDTH/2, HEIGHT/2))
-
+    print time
+    #screen.fill((255, 255, 255))
+    screen.fill((0, 0, 0))
+    #screen.blit(speedboost(), (WIDTH/2, HEIGHT/2))
+    #screen.blit(invader(), (WIDTH/2, HEIGHT/2))
+    #screen.blit(spread_icon(), (WIDTH/2, HEIGHT/2))
+    #screen.blit(orb_img, (300 + 30*math.cos(time), 300 + 30*math.sin(time)))
+    #screen.blit(orb_img, (300 + 30*math.cos(time+2*math.pi/3), 300 + 30*math.sin(time+2*math.pi/3)))
+    #screen.blit(orb_img, (300 + 30*math.cos(time+4*math.pi/3), 300 + 30*math.sin(time+4*math.pi/3)))
+    screen.blit(shield_drop(), (WIDTH/2, HEIGHT/2))
     clock.tick(80)
     pygame.display.update()

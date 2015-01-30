@@ -7,7 +7,7 @@ class HealthBar(pygame.sprite.Sprite):
     def __init__(self, ob, x, y, width, height):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
-        self.image = pygame.Surface([width,height])
+        self.image = pygame.Surface([width, height])
         self.ob = ob
         self.total = ob.get_health()
         self.width = width
@@ -39,12 +39,27 @@ class HealthBar2(HealthBar):
 
     def update_bar(self):
         """Redraws the health bar"""
+        health = self.ob.get_health()
         self.image.fill(colour.RED)
-        self.image.fill(colour.B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
-        text = self.font_ob.render(str(float(self.ob.get_health())/self.total*100) + "%", True, (0, 0, 0))
-        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)
+
+        self.image.fill(colour.B_GREEN, (0, 0, float(health)/self.total*self.width, self.height))
+        text = self.font_ob.render(str(float(health)/self.total*100) + "%", True, (0, 0, 0))
+        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)  #outline
 
         self.image.blit(text, ((self.width/2)-(text.get_width()/2), 0))
+        self.screen.blit(self.image, (self.rect.x, self.rect.y))
+
+class ShieldBar(HealthBar):
+    def __init__(self, ob, x, y, width, height):
+        HealthBar.__init__(self, ob, x, y, width, height)
+        self.total = ob.get_remaining_shield()
+
+    def update_bar(self):
+        """Redraws the shield bar"""
+        shield = self.ob.get_remaining_shield()
+        self.image.fill(colour.WHITE)
+        self.image.fill(colour.BLUE, (0, 0, float(shield)/self.total*self.width, self.height))
+        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)  #outline
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 class AmmoBar(HealthBar):
@@ -64,7 +79,7 @@ class Equip(object):
         self.defaults = {"bullet": sprites.bullet_icon(),
                          "rocket": sprites.rocketdrop(),
                          "dual": sprites.dual_bullet(),
-                         "default": sprites.startweponicon()}
+                         "spread": sprites.spread_icon()}
         self.set_weapon()
 
     def set_weapon(self):
@@ -106,6 +121,7 @@ class TopStatusBar(object):
         self.screen_h = self.screen.get_rect()[3]
         self.ship = ship
         self.health = HealthBar2(self.ship, self.screen_w*0.75, self.screen_h*0.02, 175, 18)
+        #self.shield = ShieldBar(self.ship, self.screen_w*0.75, self.screen_h*0.06, 150, 15)
         self.ammo = AmmoBar(self.ship, self.screen_w*0.50, self.screen_h*0.02, 175, 18)
         self.equip = Equip(self.ship, self.screen_w*0.30, self.screen_h*0.02)
         self.score = Text(self.screen_w*0.07, self.screen_h*0.02, 20)
@@ -119,6 +135,7 @@ class TopStatusBar(object):
         self.ammo.update_bar()
         self.health.update_bar()
         self.equip.update()
+        #self.shield.update_bar()
         self.score.render('SCORE: ' + str(self.ship.get_score()))
 
 class ScrollText(object):
@@ -140,8 +157,36 @@ class ScrollText(object):
         """Returns the difference in y coordinate from initialisation to present """
         return self.origin[1] - self._y
 
+class SoundEffects(object):
+    """class for controlling and maintaining sound effects"""
+    def __init__(self):
+        self.destroy = {"bullet": pygame.mixer.Sound("sounds/Laser_Shoot_Bullet.wav"),
+                   "spread": pygame.mixer.Sound("sounds/Laser_Shoot_Spread.wav"),
+                   "dual": pygame.mixer.Sound("sounds/Laser_Shoot.wav"),
+                   "rocket": pygame.mixer.Sound("sounds/Explosion_Rocket.wav"),
+                   "enemy": pygame.mixer.Sound("sounds/Explosion_Enemy.wav"),
+                   "enemy_shoot": pygame.mixer.Sound("sounds/Laser_Shoot_Enemy.wav")
+                    }
+        self.powerup = {"weapon": pygame.mixer.Sound("sounds/Powerup_NewWeapon.wav"),
+                        "health": pygame.mixer.Sound("sounds/Powerup_Health.wav"),
+                        "speed": pygame.mixer.Sound("sounds/Powerup_Speed.wav"),
+                        "ammo": pygame.mixer.Sound("sounds/Powerup_Ammo.wav"),
+                        "shield": pygame.mixer.Sound("sounds/Powerup_Shield.wav")
+                        }
+        self.select = pygame.mixer.Sound("sounds/Blip_Select.wav")
 
-class BotStatusBar(object):
+    def play_destroy(self, type, vol=0.7):
+        self.destroy[type].set_volume(vol)
+        self.destroy[type].play()
+
+    def play_powerup(self, type, vol=0.7):
+        self.powerup[type].set_volume(vol)
+        self.powerup[type].play()
+
+    def play_select(self):
+        self.select.play()
+
+class BotStatusBar(object):     #Not Used
     def __init__(self):
         self.screen = pygame.display.get_surface()
         self.screen_w = self.screen.get_rect()[2]

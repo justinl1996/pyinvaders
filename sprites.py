@@ -3,8 +3,6 @@ import pygame
 import colour
 """This file contains all the functions required to draw the sprites"""
 
-
-
 def ship():
     """The player's ship"""
     image = pygame.Surface([50, 15], pygame.SRCALPHA)
@@ -70,14 +68,14 @@ def bullet_icon():
     #image = pygame.transform.scale(image, (25, 25))
     return image
 
-def startweapon():
+def dotbullet():
     """Draws starting weapon"""
     image = pygame.Surface([6, 6], pygame.SRCALPHA)
     pygame.draw.circle(image, colour.BLUE, (3, 3), 3, 0)
     return image
 
 def startweponicon():
-    """Draws the icon representing the starting weapon"""
+    """Draws the icon representing the starting weapon (dot bullet)"""
     image = pygame.Surface([20, 20])
     image.fill(colour.SILVER)
     pygame.draw.circle(image, colour.BLUE, (10, 10), 4, 0)
@@ -90,5 +88,28 @@ def speedboost():
     pygame.draw.polygon(image, colour.YELLOW, [(0, 15), (10, 4), (20, 15)])
     pygame.draw.polygon(image, colour.SILVER, [(0, 19), (10, 9), (20, 19)])
     return image
+
+def spread_icon():
+    """Draws the icon representing the spread weapon (3x dot bullet)"""
+    text = pygame.font.SysFont('arial', 10).render("x3", True, (0, 0, 0))
+    image = pygame.Surface([20, 20])
+    image.fill(colour.SILVER)
+    image.blit(text, (10, 8))
+    pygame.draw.circle(image, colour.BLUE, (6, 10), 4, 0)
+    return image
+
+def orb():
+    """Draws an orb, used for the player's shield"""
+    image = pygame.Surface([16, 16], pygame.SRCALPHA)
+    pygame.draw.circle(image, colour.WHITE, (8, 8), 8, 0)
+    return image
+
+def shield_drop():
+    """Draws the item drop for the shield (circulating orb)"""
+    image = pygame.Surface([16, 16], pygame.SRCALPHA)
+    pygame.draw.circle(image, colour.BLUE, (8, 8), 8, 0)
+    pygame.draw.circle(image, colour.WHITE, (8, 8), 6, 0)
+    return image
+
 
 #WEAPON_ICON = {"bullet": bullet_icon(),"rocket": rocketdrop(),"dual":dual_bullet()}
