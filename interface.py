@@ -174,17 +174,25 @@ class SoundEffects(object):
                         "shield": pygame.mixer.Sound("sounds/Powerup_Shield.wav")
                         }
         self.select = pygame.mixer.Sound("sounds/Blip_Select.wav")
+        self.on = True
 
     def play_destroy(self, type, vol=0.7):
-        self.destroy[type].set_volume(vol)
-        self.destroy[type].play()
+        if self.on:
+            self.destroy[type].set_volume(vol)
+            self.destroy[type].play()
 
     def play_powerup(self, type, vol=0.7):
-        self.powerup[type].set_volume(vol)
-        self.powerup[type].play()
+        if self.on:
+            self.powerup[type].set_volume(vol)
+            self.powerup[type].play()
 
     def play_select(self):
-        self.select.play()
+        if self.on:
+            self.select.play()
+
+    def set_on(self, setting):
+        self.on = setting
+
 
 class BotStatusBar(object):     #Not Used
     def __init__(self):

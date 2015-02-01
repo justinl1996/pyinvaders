@@ -160,6 +160,10 @@ class Ship(pygame.sprite.Sprite):
             self._weapon.append(self._weapon.pop(0))
             self._cur_weapon = self._weapon[0]
 
+    def set_weapon(self, weapon):
+        """Sets the weapon to be immediately equiped"""
+        self._cur_weapon = weapon
+
     def get_speed(self):
         """Returns the current speed of ship"""
         return self._speed

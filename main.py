@@ -111,10 +111,17 @@ class Main(object):
         if collide_enemy:   #When enemy bullet collides with player
             for bullet in collide_enemy:
                 amount = bullet.get_amount()
+                amount = bullet.get_amount()
                 self.player.update_score(-5)
                 self.player.take_damage(amount)
                 self.text.append(interface.ScrollText(self.player.getx(), self.player.gety(),
-                                                          20, "-" + str(amount), colour.RED ))
+                                                          20, "-" + str(amount), colour.RED))
+                if self.player.get_health() < 15:
+                    self.text.append(interface.ScrollText(self.player.getx() + 70, self.player.gety(),
+                                                          20, "Health Critical", colour.RED))
+                if self.player.get_health() < 25:
+                    self.text.append(interface.ScrollText(self.player.getx() + 70, self.player.gety(),
+                                                          20, "Health Low", colour.RED))
 
         if collide_item:    #When item collides with player 
             for item in collide_item:
@@ -134,6 +141,8 @@ class Main(object):
                     if "rocket" not in self.player.get_all_weapons():
                         self.sound.play_powerup("weapon")
                         self.player.add_weapon("rocket")
+                        self.player.set_weapon("rocket")
+                        self.statusTop.new_equip()
                         self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
                                                         20, item.get_text1(), colour.GREY))
                     else:
@@ -145,6 +154,8 @@ class Main(object):
                     if "dual" not in self.player.get_all_weapons():
                         self.sound.play_powerup("weapon")
                         self.player.add_weapon("dual")
+                        self.player.set_weapon("dual")
+                        self.statusTop.new_equip()
                         self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
                                                           20, item.get_text1(), colour.RED))
 
@@ -158,6 +169,8 @@ class Main(object):
                     if "spread" not in self.player.get_all_weapons():
                         self.sound.play_powerup("weapon")
                         self.player.add_weapon("spread")
+                        self.player.set_weapon("spread")
+                        self.statusTop.new_equip()
                         self.text.append(interface.ScrollText(self.player.getx(), self.player.get_topy(),
                                                           20, item.get_text1(), colour.BLUE))
                     else:
