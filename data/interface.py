@@ -1,142 +1,142 @@
+import sprites
+import colour
+
 __author__ = 'justin'
 import pygame
-import colour
-import sprites
+
 
 class HealthBar(pygame.sprite.Sprite):
-    def __init__(self, ob, x, y, width, height):
+    def __init__(self, x, y, width, height):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
         self.image = pygame.Surface([width, height])
-        self.ob = ob
-        self.total = ob.get_health()
+        #self.ob = ob
+        #self.total = ob.get_health()
         self.width = width
         self.height = height
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
-    def move(self):
+    def move(self, x, y):
         """Updates the location the healthbar based of the ob's location"""
-        self.rect.x = self.ob.getx()
-        self.rect.y = self.ob.gety() + self.ob.height + 2
-        self.update_bar()
+        self.rect.x = x
+        self.rect.y = y
+        self.render()
 
-    def update_bar(self):
-        """Redraws the health bar"""
+    def update_bar(self, current, total):
+        """Updates the health bar"""
         self.image.fill(colour.RED)
-        if self.ob.get_health() <= 0:
-            self.kill()
-        else:
-            self.image.fill(colour.B_GREEN, (0, 0, float(self.ob.get_health())/self.total*self.width, self.height))
-            self.screen.blit(self.image, (self.rect.x,self.rect.y))
+        self.image.fill(colour.B_GREEN, (0, 0, float(current)/total*self.width, self.height))
+
+    def render(self):
+        """Draws the health bar on screen"""
+        self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 class HealthBar2(HealthBar):
-    """HealthBar Version 2. Need to pass Ship object. Also displays health overlayed in percentage on the healthbar"""
-    def __init__(self, ob, x, y, width, height):
-        HealthBar.__init__(self, ob, x, y, width, height)
+    """HealthBar Version 2. Updated to display health overlayed in percentage on the healthbar"""
+    def __init__(self, x, y, width, height):
+        HealthBar.__init__(self, x, y, width, height)
         self.font_ob = pygame.font.SysFont('arial', 15)
 
-    def update_bar(self):
-        """Redraws the health bar"""
-        health = self.ob.get_health()
+    def update_bar(self, current, total):
+        """Updates the health bar"""
         self.image.fill(colour.RED)
-
-        self.image.fill(colour.B_GREEN, (0, 0, float(health)/self.total*self.width, self.height))
-        text = self.font_ob.render(str(float(health)/self.total*100) + "%", True, (0, 0, 0))
+        self.image.fill(colour.B_GREEN, (0, 0, float(current)/total*self.width, self.height))
+        text = self.font_ob.render(str(float(current)/total*100) + "%", True, (0, 0, 0))
         pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)  #outline
-
         self.image.blit(text, ((self.width/2)-(text.get_width()/2), 0))
-        self.screen.blit(self.image, (self.rect.x, self.rect.y))
-
-class ShieldBar(HealthBar):
-    def __init__(self, ob, x, y, width, height):
-        HealthBar.__init__(self, ob, x, y, width, height)
-        self.total = ob.get_remaining_shield()
-
-    def update_bar(self):
-        """Redraws the shield bar"""
-        shield = self.ob.get_remaining_shield()
-        self.image.fill(colour.WHITE)
-        self.image.fill(colour.BLUE, (0, 0, float(shield)/self.total*self.width, self.height))
-        pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)  #outline
-        self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 class AmmoBar(HealthBar):
-    def update_bar(self):
-        """Redraws ammunition bar"""
+    def update_bar(self, current, total):
+        """Update ammunition bar"""
         self.image.fill(colour.WHITE)
-        pygame.draw.rect(self.image, colour.J_GREEN, (0, 0, float(self.ob.get_ammo())/self.ob.get_ammolimit()*self.width, self.height))
+        pygame.draw.rect(self.image, colour.J_GREEN, (0, 0, float(current)/total*self.width, self.height))
         pygame.draw.rect(self.image, colour.BLACK, (0, 0, self.width, self.height), 1)
+
+    def render(self):
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 class Equip(object):
-    def __init__(self, ship, x, y):
+    def __init__(self, x, y):
         self.screen = pygame.display.get_surface()
-        self.ship = ship
         self.x = x
         self.y = y
         self.defaults = {"bullet": sprites.bullet_icon(),
                          "rocket": sprites.rocketdrop(),
                          "dual": sprites.dual_bullet(),
                          "spread": sprites.spread_icon()}
-        self.set_weapon()
+        #self.set_weapon()
 
-    def set_weapon(self):
+    def update(self, weapon):
         """Sets the equiped weapon ready to draw"""
-        self.image = self.defaults[self.ship.get_weapon()]
-        self.update()
+        self.image = self.defaults[weapon]
+        self.render()
 
-    def update(self):
+    def render(self):
         """Redraws the current weapon box"""
         pygame.draw.rect(self.image, colour.BLACK, (0, 0, 20, 20), 1)
         self.screen.blit(self.image, (self.x, self.y))
 
 class Text(object):
     """Basic text class"""
-    def __init__(self, x, y, size):
+    def __init__(self, x, y, size, col):
         self.font_ob = pygame.font.SysFont('arial', size)
+        #self.font_ob = pygame.font.Font('font/ka1.ttf', 20)
         self.screen = pygame.display.get_surface()
         self.x = x
         self.y = y
+        self.colour = col
 
     def render(self, text):
         """Redraws the text, call this to update"""
-        text_sf = self.font_ob.render(text, True, colour.WHITE)
+        text_sf = self.font_ob.render(text, True, self.colour)
         self.screen.blit(text_sf, (self.x, self.y))
 
-class TextCenter(Text):
-    """Inherits for Text, TextCenter automatically center aligns text"""
+class ArcadeText(Text):
+    """Uses ka1.ttf font instead of system font"""
+    def __init__(self, x, y, size, col):
+        Text.__init__(self, x, y, size, col)
+        self.font_ob = pygame.font.Font('font/ka1.ttf', size)
+
+class Score(object):
+    def __init__(self, x, y):
+        self._score = 0
+        self._text = ArcadeText(x, y, 20, colour.GREEN)
+        self.update_score()
+
+    def update_score(self, amount=0):
+        self._score += amount
+        self._text.render("Score: " + str(self._score))
+
+    def render(self):
+        self._text.render("Score: " + str(self._score))
+
+class TextCenter(ArcadeText):
+    """Inherits from ArcadeText, TextCenter automatically center aligns text"""
     def render(self, text):
         """Redraws the text in center pos, call this to update"""
-        text_sf = self.font_ob.render(text, True, colour.WHITE)
+        text_sf = self.font_ob.render(text, True, self.colour)
         self.screen.blit(text_sf, (self.x-text_sf.get_width()/2, self.y))
 
 
 class TopStatusBar(object):
     """Class which represents the interface bar at the top of screen, it contains the score, health, ammo etc."""
-    def __init__(self, ship):
+    def __init__(self, health, ammo, equip, score):
         self.screen = pygame.display.get_surface()
-        self.screen_w = self.screen.get_rect()[2]
-        self.screen_h = self.screen.get_rect()[3]
-        self.ship = ship
-        self.health = HealthBar2(self.ship, self.screen_w*0.75, self.screen_h*0.02, 175, 18)
-        #self.shield = ShieldBar(self.ship, self.screen_w*0.75, self.screen_h*0.06, 150, 15)
-        self.ammo = AmmoBar(self.ship, self.screen_w*0.50, self.screen_h*0.02, 175, 18)
-        self.equip = Equip(self.ship, self.screen_w*0.30, self.screen_h*0.02)
-        self.score = Text(self.screen_w*0.07, self.screen_h*0.02, 20)
-
-    def new_equip(self):
-        """Just updates the equip box"""
-        self.equip.set_weapon()
+        self.screen_w = self.screen.get_width()
+        self.screen_h = self.screen.get_height()
+        self._health = health
+        self._ammo = ammo
+        self._equip = equip
+        self._score = score
 
     def update(self):
         """Updates everything"""
-        self.ammo.update_bar()
-        self.health.update_bar()
-        self.equip.update()
-        #self.shield.update_bar()
-        self.score.render('SCORE: ' + str(self.ship.get_score()))
+        self._ammo.render()
+        self._health.render()
+        self._equip.render()
+        self._score.render()
 
 class ScrollText(object):
     """Basic text class to represent scrolling text"""
@@ -165,7 +165,8 @@ class SoundEffects(object):
                    "dual": pygame.mixer.Sound("sounds/Laser_Shoot.wav"),
                    "rocket": pygame.mixer.Sound("sounds/Explosion_Rocket.wav"),
                    "enemy": pygame.mixer.Sound("sounds/Explosion_Enemy.wav"),
-                   "enemy_shoot": pygame.mixer.Sound("sounds/Laser_Shoot_Enemy.wav")
+                   "enemy_shoot": pygame.mixer.Sound("sounds/Laser_Shoot_Enemy.wav"),
+                   "orb": pygame.mixer.Sound("sounds/Laser_Shoot_Eject.wav")
                     }
         self.powerup = {"weapon": pygame.mixer.Sound("sounds/Powerup_NewWeapon.wav"),
                         "health": pygame.mixer.Sound("sounds/Powerup_Health.wav"),
@@ -194,17 +195,4 @@ class SoundEffects(object):
         self.on = setting
 
 
-class BotStatusBar(object):     #Not Used
-    def __init__(self):
-        self.screen = pygame.display.get_surface()
-        self.screen_w = self.screen.get_rect()[2]
-        self.screen_h = self.screen.get_rect()[3]
-        self.message = None
-        self.text = Text(self.screen_w*0.04, self.screen_h*0.95 , 18)
 
-    def display(self, text):
-        self.message = text
-        self.update()
-
-    def update(self):
-        self.text.render(self.message)

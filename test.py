@@ -1,7 +1,8 @@
+from data import colour
+from data import interface
+
 __author__ = 'justin'
 import pygame
-import colour
-import math
 
 WIDTH = 800
 HEIGHT = 600
@@ -43,12 +44,13 @@ def spread_icon():
 
 def invader():
     image = pygame.Surface([30, 25], pygame.SRCALPHA)
-    pygame.draw.rect(image, colour.BLUE, (5, 0, 20, 20))
+    pygame.draw.rect(image, colour.GREEN, (5, 0, 20, 20))
     pygame.draw.rect(image, colour.BLACK, (7, 5, 4, 4))
     pygame.draw.rect(image, colour.BLACK, (19, 5, 4, 4))
     pygame.draw.rect(image, colour.BLACK, (10, 13, 10, 4))
-    pygame.draw.rect(image, colour.BLUE, (0, 15, 5, 15))
-    pygame.draw.rect(image, colour.BLUE, (25, 15, 5, 10))
+    pygame.draw.rect(image, colour.GREEN, (0, 15, 5, 15))
+    pygame.draw.rect(image, colour.GREEN, (25, 15, 5, 10))
+    pygame.image.save(image, "invader.tga")
     return image
 
 def orb():
@@ -63,20 +65,21 @@ def shield_drop():
     return image
 
 
+text = pygame.font.SysFont('arial', 20)
+
+def instructions():
+    image = pygame.Surface([200, 300], pygame.SRCALPHA)
+
+    image.render(" arrow")
+
 clock = pygame.time.Clock()
 
-orb_img = orb()
-time = 0
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             raise SystemExit
-    time += 0.05
-    if time > 1000:
-        time = 0
 
-    print time
     #screen.fill((255, 255, 255))
     screen.fill((0, 0, 0))
     #screen.blit(speedboost(), (WIDTH/2, HEIGHT/2))
@@ -85,6 +88,6 @@ while True:
     #screen.blit(orb_img, (300 + 30*math.cos(time), 300 + 30*math.sin(time)))
     #screen.blit(orb_img, (300 + 30*math.cos(time+2*math.pi/3), 300 + 30*math.sin(time+2*math.pi/3)))
     #screen.blit(orb_img, (300 + 30*math.cos(time+4*math.pi/3), 300 + 30*math.sin(time+4*math.pi/3)))
-    screen.blit(shield_drop(), (WIDTH/2, HEIGHT/2))
+    screen.blit(invader(), (WIDTH/2, HEIGHT/2))
     clock.tick(80)
     pygame.display.update()

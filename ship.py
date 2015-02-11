@@ -1,7 +1,5 @@
-import sys
 import pygame
-import game_objects
-import interface
+from data import interface, game_objects
 
 WIDTH = 800
 HEIGHT = 600

@@ -1,6 +1,8 @@
+import colour
+
 __author__ = 'justin'
 import pygame
-import colour
+
 """This file contains all the functions required to draw the sprites"""
 
 def ship():

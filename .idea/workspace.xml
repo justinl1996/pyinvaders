@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/game_objects.py" line="515" mnemonic="0" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="511f00fa-01d7-4fee-b4b8-cfe17afec9e4" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Blast.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Laser.wav" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sounds/Blip_Select.wav" afterPath="$PROJECT_DIR$/sounds/Blip_Select.wav" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game_objects.py" afterPath="$PROJECT_DIR$/game_objects.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/interface.py" afterPath="$PROJECT_DIR$/interface.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/image.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/textmsg.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/colour.py" afterPath="$PROJECT_DIR$/data/colour.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/game_objects.py" afterPath="$PROJECT_DIR$/data/game_objects.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/interface.py" afterPath="$PROJECT_DIR$/data/interface.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/data/game_bak.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/menu_item.py" afterPath="$PROJECT_DIR$/data/menu_item.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/sprites.py" afterPath="$PROJECT_DIR$/data/sprites.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/vector.py" afterPath="$PROJECT_DIR$/data/vector.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/menu.py" afterPath="$PROJECT_DIR$/menu.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/menu_item.py" afterPath="$PROJECT_DIR$/menu_item.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ship.py" afterPath="$PROJECT_DIR$/ship.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="space_invaders.iws" />
@@ -39,54 +43,45 @@
       <file leaf-file-name="menu.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/menu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="23" selection-start="3014" selection-end="3014" vertical-scroll-proportion="0.0" vertical-offset="1773" max-vertical-offset="2502">
+            <state line="114" column="30" selection-start="5095" selection-end="5095" vertical-scroll-proportion="0.0" vertical-offset="1642" max-vertical-offset="3204">
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="image.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/image.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="21" selection-start="547" selection-end="547" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="menu_item.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/menu_item.py">
+        <entry file="file://$PROJECT_DIR$/data/menu_item.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="21" selection-start="2804" selection-end="2804" vertical-scroll-proportion="0.0" vertical-offset="819" max-vertical-offset="3330">
-              <folding>
-                <element signature="e#22#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="game_objects.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game_objects.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="21" selection-start="3799" selection-end="3799" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="11412">
+            <state line="99" column="106" selection-start="3472" selection-end="3472" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3978">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vector.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vector.py">
+      <file leaf-file-name="interface.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="1" selection-start="632" selection-end="632" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="738">
+            <state line="166" column="48" selection-start="6269" selection-end="6269" vertical-scroll-proportion="-0.18518518" vertical-offset="2965" max-vertical-offset="3654">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sprites.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sprites.py">
+      <file leaf-file-name="game.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="122" selection-end="122" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="2160">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="colour.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/colour.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="9" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="396">
+            <state line="61" column="83" selection-start="2382" selection-end="2382" vertical-scroll-proportion="130.96297" vertical-offset="4598" max-vertical-offset="4986">
               <folding />
             </state>
           </provider>
@@ -95,25 +90,36 @@
       <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="54" selection-start="2074" selection-end="2074" vertical-scroll-proportion="0.0" vertical-offset="1098" max-vertical-offset="1674">
+            <state line="32" column="16" selection-start="1003" selection-end="1003" vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="1764">
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game_objects.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data/game_objects.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="188" column="40" selection-start="6970" selection-end="6970" vertical-scroll-proportion="3.4457831" vertical-offset="1900" max-vertical-offset="12816">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.py">
+      <file leaf-file-name="vector.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/vector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="78" selection-start="5364" selection-end="5364" vertical-scroll-proportion="-1.4013158" vertical-offset="2709" max-vertical-offset="4140">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="738">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="interface.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/interface.py">
+      <file leaf-file-name="sprites.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/sprites.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="193" column="25" selection-start="7978" selection-end="7978" vertical-scroll-proportion="0.0" vertical-offset="2889" max-vertical-offset="3834">
+            <state line="56" column="54" selection-start="1931" selection-end="1931" vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="2196">
               <folding />
             </state>
           </provider>
@@ -137,24 +143,30 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/ship.py" />
-        <option value="$PROJECT_DIR$/colour.py" />
-        <option value="$PROJECT_DIR$/vector.py" />
-        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/textmsg.py" />
         <option value="$PROJECT_DIR$/sprites.py" />
-        <option value="$PROJECT_DIR$/game_objects.py" />
         <option value="$PROJECT_DIR$/interface.py" />
         <option value="$PROJECT_DIR$/menu_item.py" />
-        <option value="$PROJECT_DIR$/menu.py" />
+        <option value="$PROJECT_DIR$/game_objects.py" />
+        <option value="$PROJECT_DIR$/data/sprites.py" />
+        <option value="$PROJECT_DIR$/image.py" />
+        <option value="$PROJECT_DIR$/img/image.py" />
+        <option value="$PROJECT_DIR$/data/image.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/data/menu_item.py" />
+        <option value="$PROJECT_DIR$/data/game.py" />
+        <option value="$PROJECT_DIR$/menu.py" />
+        <option value="$PROJECT_DIR$/data/interface.py" />
+        <option value="$PROJECT_DIR$/data/game_objects.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="30" />
-    <option name="width" value="1259" />
-    <option name="height" value="743" />
+    <option name="x" value="-1" />
+    <option name="y" value="29" />
+    <option name="width" value="1282" />
+    <option name="height" value="746" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -201,7 +213,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -256,16 +267,31 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="sounds" />
+              <option name="myItemId" value="img" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="space_invaders" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="space_invaders" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/menu.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data/vector.py" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -278,7 +304,19 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/img" />
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$/img" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/data2" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main (1)">
     <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -311,29 +349,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="space_invaders" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/game.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="game_objects" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="space_invaders" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game_objects.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -369,7 +389,25 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="space_invaders" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/vector.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/vector.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="space_invaders" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -496,20 +534,39 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.test" />
-      <item index="1" class="java.lang.String" itemvalue="Python.main" />
-      <item index="2" class="java.lang.String" itemvalue="Python.game_objects" />
+    <configuration default="false" name="game" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="space_invaders" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/game.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <list size="6">
+      <item index="0" class="java.lang.String" itemvalue="Python.game" />
+      <item index="1" class="java.lang.String" itemvalue="Python.test" />
+      <item index="2" class="java.lang.String" itemvalue="Python.main" />
       <item index="3" class="java.lang.String" itemvalue="Python.menu" />
       <item index="4" class="java.lang.String" itemvalue="Python.vector" />
+      <item index="5" class="java.lang.String" itemvalue="Python.main (1)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.menu" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test" />
-        <item index="3" class="java.lang.String" itemvalue="Python.vector" />
-        <item index="4" class="java.lang.String" itemvalue="Python.game_objects" />
+        <item index="0" class="java.lang.String" itemvalue="Python.main (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.menu" />
+        <item index="3" class="java.lang.String" itemvalue="Python.main" />
+        <item index="4" class="java.lang.String" itemvalue="Python.vector" />
       </list>
     </recent_temporary>
   </component>
@@ -569,18 +626,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="30" width="1259" height="743" extended-state="6" />
-    <editor active="true" />
+    <frame x="-1" y="29" width="1282" height="746" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15234375" sideWeight="0.7947883" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19921875" sideWeight="0.7833876" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39934534" sideWeight="0.50039524" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20621932" sideWeight="0.5383399" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21661238" sideWeight="0.5383399" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3846154" sideWeight="0.49960473" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3843648" sideWeight="0.49960473" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -629,26 +686,11 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/game_objects.py">
+    <entry file="file://$PROJECT_DIR$/data/sprites.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="23" selection-start="1359" selection-end="1359" vertical-scroll-proportion="0.0" vertical-offset="828" max-vertical-offset="1170">
+        <state line="56" column="54" selection-start="1931" selection-end="1931" vertical-scroll-proportion="0.0" vertical-offset="756" max-vertical-offset="2196">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/repr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.94553375" vertical-offset="434" max-vertical-offset="2466" />
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/random.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="30" selection-start="149" selection-end="149" vertical-scroll-proportion="-29.640522" vertical-offset="13749" max-vertical-offset="16290" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ship.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="16" selection-start="451" selection-end="1499" vertical-scroll-proportion="0.0" vertical-offset="351" max-vertical-offset="1080" />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-1247972723/__builtin__.py">
@@ -661,72 +703,89 @@
         <state line="1142" column="0" selection-start="47510" selection-end="47510" vertical-scroll-proportion="0.07582939" vertical-offset="19336" max-vertical-offset="26496" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/textmsg.py">
+    <entry file="file://$PROJECT_DIR$/data/game_bak.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="12" selection-start="193" selection-end="228" vertical-scroll-proportion="0.0068965517" vertical-offset="123" max-vertical-offset="558" />
+        <state line="14" column="21" selection-start="207" selection-end="207" vertical-scroll-proportion="0.49655172" vertical-offset="0" max-vertical-offset="4212" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/menu_item.py">
+    <entry file="file://$PROJECT_DIR$/data/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="21" selection-start="2804" selection-end="2804" vertical-scroll-proportion="0.0" vertical-offset="1242" max-vertical-offset="3330">
-          <folding>
-            <element signature="e#22#35#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/menu.py">
+    <entry file="file://$PROJECT_DIR$/img/title.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="23" selection-start="3014" selection-end="3014" vertical-scroll-proportion="0.0" vertical-offset="1773" max-vertical-offset="2502">
+        <state line="5" column="16" selection-start="100" selection-end="100" vertical-scroll-proportion="0.21028037" vertical-offset="0" max-vertical-offset="428" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/vector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="738">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="54" selection-start="2074" selection-end="2074" vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="1674">
+        <state line="32" column="16" selection-start="1003" selection-end="1003" vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="1764">
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="83" selection-start="2382" selection-end="2382" vertical-scroll-proportion="130.96297" vertical-offset="4598" max-vertical-offset="4986">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/colour.py">
+    <entry file="file://$PROJECT_DIR$/data/menu_item.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="9" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="396">
+        <state line="99" column="106" selection-start="3472" selection-end="3472" vertical-scroll-proportion="0.0" vertical-offset="647" max-vertical-offset="3978">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sprites.py">
+    <entry file="file://$PROJECT_DIR$/menu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="122" selection-end="122" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2142">
+        <state line="114" column="30" selection-start="5095" selection-end="5095" vertical-scroll-proportion="0.0" vertical-offset="1642" max-vertical-offset="3204">
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/sprites.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="54" selection-start="1931" selection-end="1931" vertical-scroll-proportion="0.0" vertical-offset="756" max-vertical-offset="2196">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vector.py">
+    <entry file="file://$PROJECT_DIR$/data/interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="1" selection-start="632" selection-end="632" vertical-scroll-proportion="0.0" vertical-offset="282" max-vertical-offset="738">
+        <state line="166" column="48" selection-start="6269" selection-end="6269" vertical-scroll-proportion="-0.18518518" vertical-offset="2965" max-vertical-offset="3654">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game_objects.py">
+    <entry file="file://$PROJECT_DIR$/data/image.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="21" selection-start="3799" selection-end="3799" vertical-scroll-proportion="0.0" vertical-offset="1566" max-vertical-offset="11412">
+        <state line="16" column="21" selection-start="547" selection-end="547" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/interface.py">
+    <entry file="file://$PROJECT_DIR$/data/game_objects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="25" selection-start="7978" selection-end="7978" vertical-scroll-proportion="0.0" vertical-offset="2889" max-vertical-offset="3834">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="78" selection-start="5364" selection-end="5364" vertical-scroll-proportion="-1.4013158" vertical-offset="2709" max-vertical-offset="4140">
+        <state line="188" column="40" selection-start="6970" selection-end="6970" vertical-scroll-proportion="3.4457831" vertical-offset="1900" max-vertical-offset="12816">
           <folding />
         </state>
       </provider>

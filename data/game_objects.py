@@ -1,17 +1,20 @@
+import sprites
+import interface
+import colour
+import vector
+
 __author__ = 'justin'
 import pygame
 import time
 import random
-import interface
-import colour
-import sprites
 import math
-import vector
+
 
 class Ship(pygame.sprite.Sprite):
     """Class which represents the player's ship"""
-    def __init__(self, sound):
+    def __init__(self, parent, healthbar, ammobar, equip):
         pygame.sprite.Sprite.__init__(self)
+        self.parent = parent
         self.screen = pygame.display.get_surface()
         self.image = sprites.ship()
         self.rect = self.image.get_rect()
@@ -19,10 +22,10 @@ class Ship(pygame.sprite.Sprite):
         self.height = 15
         self.width = 50
         self.rect.x = (self.screen.get_rect()[2] - self.width)/2
+        self._total_health = 100
         self._health = 100  #Starting health
-        self._ammo_limits = {"bullet": 120, "rocket": 7, "spread": 150}  #Ammo limits
-        self._ammo = {"bullet": 100, "rocket": 5, "spread": 80}    #Starting ammo
-        self._score = 0     #Starting score
+        self._ammo_limits = {"bullet": 150, "rocket": 10, "spread": 160}  #Ammo limits
+        self._ammo = {"bullet": 120, "rocket": 5, "spread": 100}    #Starting ammo
         self._weapon = ["bullet"]   #Weapons the ship is equipped with
         self._cur_weapon = "bullet" #default weapon
         self._bullets = pygame.sprite.Group()
@@ -30,7 +33,13 @@ class Ship(pygame.sprite.Sprite):
         self._speed = 3  #initial starting speed
         self._orb_count = 0
         self._time = 250
-        self.sound = sound
+        self._health_bar = healthbar
+        self._health_bar.update_bar(self._health, self._total_health)
+        self._ammo_bar = ammobar
+        self._update_ammo()
+        self._equipbox = equip
+        self._equipbox.update(self._cur_weapon)
+        self.sound = parent.sound
 
     def right(self):
         """Moves the ship in the right direction, with the amount given by the self._speed"""
@@ -53,31 +62,35 @@ class Ship(pygame.sprite.Sprite):
         """Return the y-coordinate of the center of ship"""
         return self.rect.centery
 
+    def reset(self):
+        """Resets back to its initial state"""
+        self._bullets.empty()
+        self._shield.empty()
+        self._orb_count = 0
+        self._speed = 3
+
     def shoot(self):
         """Adds a Bullet or Rocket to the bullets group"""
         if self._cur_weapon == "bullet" and self._ammo["bullet"] > 0:
             self.sound.play_destroy("bullet")
-            self._bullets.add(Bullet(self.rect.x+self.width/2, self.rect.y + self.height, 3))
+            self._bullets.add(Bullet(self.rect.centerx, self.rect.y + self.height, 3))
             self._ammo["bullet"] -= 1
         elif self._cur_weapon == "rocket" and self._ammo["rocket"] > 0:
             self.sound.play_destroy("rocket")
-            self._bullets.add(Rocket(self.rect.x+self.width/2, self.rect.y, 3))
+            self._bullets.add(Rocket(self.rect.centerx, self.rect.y, 3))
             self._ammo["rocket"] -= 1
         elif self._cur_weapon == "dual" and self._ammo["bullet"] > 0:
             self.sound.play_destroy("bullet")
-            self._bullets.add(Bullet(self.rect.x+self.width/2 - 4, self.rect.y + self.height, 3))
-            self._bullets.add(Bullet(self.rect.x+self.width/2 + 4, self.rect.y + self.height, 3))
+            self._bullets.add(Bullet(self.rect.centerx - 4, self.rect.y + self.height, 3))
+            self._bullets.add(Bullet(self.rect.centerx + 4, self.rect.y + self.height, 3))
             self._ammo["bullet"] -= 2
         elif self._cur_weapon == "spread" and self._ammo["spread"] > 0:
             self.sound.play_destroy("spread")
-            self._bullets.add(DotWeapon(self.rect.x+self.width/2, self.rect.y + self.height, 10))
-            self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, 1))
-            self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, -1))
-
-
-
-            #self._bullets.add(AngleBullet(self.rect.x+self.width/2, self.rect.y + self.height, 3, 0))
+            self._bullets.add(DotWeapon(self.rect.centerx, self.rect.y + self.height, 10))
+            self._bullets.add(AngleBullet(self.rect.centerx, self.rect.y + self.height, 3, 1))
+            self._bullets.add(AngleBullet(self.rect.centerx, self.rect.y + self.height, 3, -1))
             self._ammo["spread"] -= 3
+        self._update_ammo()
 
     def get_health(self):
         """Returns the amount of health remaining"""
@@ -86,6 +99,9 @@ class Ship(pygame.sprite.Sprite):
     def take_damage(self, amount):
         """Decrement the health of the ship by a given amount"""
         self._health -= amount
+        self._health_bar.update_bar(self._health, self._total_health)
+        if self._health <= 0:
+            self.parent.lose()
 
     def add_health(self, amount):
         """Increment the health of the ship by a given amount"""
@@ -93,20 +109,14 @@ class Ship(pygame.sprite.Sprite):
             self._health += amount
         else:
             self._health = 100
+        self._health_bar.update_bar(self._health, self._total_health)
 
-    def get_ammo(self):
-        """Returns the amount of ammo remaining"""
+    def _update_ammo(self):
+        """Updates the ammo bar"""
         if self._cur_weapon == "dual":
-            return self._ammo["bullet"]
+            self._ammo_bar.update_bar(self._ammo["bullet"], self._ammo_limits["bullet"])
         else:
-            return self._ammo[self._cur_weapon]
-
-    def get_ammolimit(self):
-        """Returns the ammo limit for the equipped weapon"""
-        if self._cur_weapon == "dual":
-            return self._ammo_limits["bullet"]
-        else:
-            return self._ammo_limits[self._cur_weapon]
+            self._ammo_bar.update_bar(self._ammo[self._cur_weapon], self._ammo_limits[self._cur_weapon])
 
     def add_ammo(self, weapon, amount):
         """Increments the player's ammunition"""
@@ -114,17 +124,12 @@ class Ship(pygame.sprite.Sprite):
             self._ammo[weapon] += amount
         else:
             self._ammo[weapon] = self._ammo_limits[weapon]
+        self._update_ammo()
+
 
     def decrement_ammo(self, amount, weapon):
         self._ammo[weapon] -= amount
-
-    def update_score(self, amount):
-        """updates the score of the ship, 10 per-kill"""
-        self._score += amount
-
-    def get_score(self):
-        """Returns the score"""
-        return self._score
+        self._update_ammo()
 
     def get_bullets(self):
         """Returns the group containing the bullets"""
@@ -138,6 +143,7 @@ class Ship(pygame.sprite.Sprite):
             self._time -= 0.05
             self._shield.update(self._time)
             self._shield.draw(self.screen)
+
 
     def add_weapon(self, weapon):
         """appends a weapon to the weapon's list if it is not already in there"""
@@ -159,10 +165,14 @@ class Ship(pygame.sprite.Sprite):
         if len(self._weapon) != 1:
             self._weapon.append(self._weapon.pop(0))
             self._cur_weapon = self._weapon[0]
+        self._update_ammo()
+        self._equipbox.update(self._cur_weapon)
 
     def set_weapon(self, weapon):
         """Sets the weapon to be immediately equiped"""
         self._cur_weapon = weapon
+        self._update_ammo()
+        self._equipbox.update(self._cur_weapon)
 
     def get_speed(self):
         """Returns the current speed of ship"""
@@ -172,6 +182,15 @@ class Ship(pygame.sprite.Sprite):
         """Increments the speed by 1 provided self._speed < 10  """
         if self._speed < 10:
             self._speed += 1
+
+    def eject_orb(self):
+        """Ramdomly selects an orb to be ejected from the ship"""
+        if self._orb_count > 0:
+            self.sound.play_destroy("orb")
+            orb = random.choice(self._shield.sprites())
+            self._shield.remove(orb)
+            self._bullets.add(OrbBullet(self.rect.centerx, self.rect.centery))
+            self._orb_count -= 1
 
     def add_orb(self):
         """Adds an additional orb to circulate the ship"""
@@ -248,10 +267,10 @@ class DotWeapon(Bullet):
 
 
 class AngleBullet(Bullet):
-    def __init__(self, x, y, speed, dir):
+    def __init__(self, x, y, speed, xdir):
         Bullet.__init__(self, x, y, speed)
-        self.vector = vector.Vector(dir, 5)
-        self.rect.x = x
+        self.direction = (xdir, 5)
+        self.rect.centerx = x
         self.rect.y = y
         self.speed = speed
 
@@ -266,8 +285,8 @@ class AngleBullet(Bullet):
         """Updates the position of the bullet. ie. moves it across and up the screen
         destroys the bullet if exceed screen height
         """
-        self.rect.x += self.vector.getx() * 2
-        self.rect.y -= self.vector.gety() * 2
+        self.rect.x += self.direction[0] * 2
+        self.rect.y -= self.direction[1] * 2
         if self.rect.y < 0:
             self.kill()
 
@@ -428,24 +447,25 @@ class ShieldItem(BulletDown):
 
 class EnemyCluster(object):
     """ This class groups together enemy ships, it is automatically populated"""
-    def __init__(self, draw_screen, sound):
+    def __init__(self, parent, level, col):
         self.screen = pygame.display.get_surface()
         self.enemies = pygame.sprite.Group()
         self.health_bars = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
+        self.parent = parent
+        self.level = level
         self._enemieslst = []
         self.total = 0
         self.count = 0 #No. of enemy ships at any given time
+        self.colour = col   #colour for enemy sprites
         self._populate()
-        self.screen = draw_screen
-        self.center = self.screen.get_rect()[2]/2
+        self.center = self.screen.get_width()/2
         self.old_time = time.clock()
-        self.sound = sound
+        self.sound = parent.sound
         self.speed = 1
         self.diry = 0 # 1=down 0=no vertical movement
         self.dirx = self.speed # 1=right, -1=left
-
 
     def get_ships(self):
         """Returns the group of enemy ships contained in this cluster"""
@@ -459,25 +479,46 @@ class EnemyCluster(object):
         """Returns the group of bullets"""
         return self.bullets
 
+    def new_level(self):
+        """Increments the level setting by 1 and returns the newly set level"""
+        self.level += 1
+        return self.level
+
+    def reset(self):
+        """Resets the enemy cluster once again"""
+        self.center = self.screen.get_width()/2
+        self.bullets.empty()
+        self.items.empty()
+        self._enemieslst = []
+        self.speed = 1
+        self._populate()
+
     def _populate(self):
         """Populates the cluster with the enemy battleships"""
         width = self.screen.get_rect()[2]
         height = self.screen.get_rect()[3]
         left = 0.1*width
         right = width - left
-        for row, y in enumerate(range(int(0.1*height),height/2, 40)):
+        for row, y in enumerate(range(int(0.1*height), height/2, 40)):
             self._enemieslst.append([])
             for col, x in enumerate(range(int(left), int(right), 80)):
-                temp = Enemy(x, y, 30, 30, self, (row, col))
-                self._enemieslst[-1].append(temp)
-                self.health_bars.add(interface.HealthBar(temp, x, y, 30, 4))
-                self.enemies.add(temp)
+                temp_health = interface.HealthBar(x, y, 30, 4)
+                temp_enemy = Enemy(x, y, 30, 30, self, (row, col), temp_health)
+                self.health_bars.add(temp_health)
+                self.enemies.add(temp_enemy)
+                self._enemieslst[-1].append(temp_enemy)
+                self.enemies.add(temp_enemy)
                 self.count += 1
+                #temp = Enemy(x, y, 30, 30, self, (row, col))
+                #self._enemieslst[-1].append(temp)
+                #self.health_bars.add(interface.HealthBar(temp, x, y, 30, 4))
+                #self.enemies.add(temp)
+                #self.count += 1
         self.total = self.count
 
     def _shoot(self):
         """Randomly selects a ship from the group and calls its shoot method"""
-        if time.clock() - self.old_time > 0.25 * self.speed:
+        if time.clock() - self.old_time > 0.25/self.level * self.speed:
             #print "Selecting random ship"
             select = random.randint(0, len(self.enemies.sprites())-1)
             self.sound.play_destroy("enemy_shoot", 0.02)
@@ -491,24 +532,25 @@ class EnemyCluster(object):
         #print self.direction
         self.diry = 0
 
-    def _move_health(self):
+    def _render_health(self):
         """Moves the heathbars, call this to update their position after enemy ships have moved"""
         for h in self.health_bars:
-            h.move()
+            h.render()
 
     def update(self):
         if self.dirx > 0:
-            if self.center > 0.60*self.screen.get_rect()[2]:
+            if self.center > 0.60*self.screen.get_width():
                 self.dirx = -self.speed
                 self.diry = 5
         else:
-            if self.center < 0.40*self.screen.get_rect()[2]:
+            if self.center < 0.40*self.screen.get_width():
                 self.dirx = self.speed
                 self.diry = 5
+        if self._move_ships():
+            self.parent.lose()
 
         self.center += self.dirx
-        self._move_ships()
-        self._move_health()
+        self._render_health()
         self.enemies.draw(self.screen)
         self.health_bars.draw(self.screen)
         self.bullets.update()
@@ -529,7 +571,9 @@ class EnemyCluster(object):
         if self._enemieslst[row][col].get_health() > 0 and self._enemieslst[row][col].destroy(amount):
             self.count -= 1
             self.sound.play_destroy("enemy")
-            if self.count < 0.1*self.total:
+            if self.count == 0:
+                self.parent.win()
+            elif self.count < 0.1*self.total:
                 self.speed = 4
             elif self.count < 0.2*self.total:
                 self.speed = 3
@@ -546,9 +590,10 @@ class EnemyCluster(object):
 
 class Enemy(pygame.sprite.Sprite):
     """This class represents the enemy sprites"""
-    def __init__(self, x, y, width, height, parent, pos):
+    def __init__(self, x, y, width, height, parent, pos, health_bar):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
+        self.col = parent.colour
         self.image = self._draw_sprite()
         #pygame.draw.rect(self.image, colour.BLUE, (0,0,width,height))
         self.rect = self.image.get_rect()
@@ -556,26 +601,32 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.width = width
         self.height = height
+        self.total = 10
         self.health = 10
+        self.health_bar = health_bar
+        self.health_bar.update_bar(self.health, self.total)
         self.parent = parent
         self.pos = pos    #Position in list in terms for row and column
 
+
     def _draw_sprite(self):
-        col = colour.PURPLE
+        #col = colour.PURPLE
         image = pygame.Surface([30, 25], pygame.SRCALPHA)
-        pygame.draw.rect(image, col, (5, 0, 20, 20))
+        pygame.draw.rect(image, self.col, (5, 0, 20, 20))
         pygame.draw.rect(image, colour.BLACK, (7, 5, 4, 4))
         pygame.draw.rect(image, colour.BLACK, (19, 5, 4, 4))
         pygame.draw.rect(image, colour.BLACK, (10, 13, 10, 4))
-        pygame.draw.rect(image, col, (0, 15, 5, 15))
-        pygame.draw.rect(image, col, (25, 15, 5, 10))
+        pygame.draw.rect(image, self.col, (0, 15, 5, 15))
+        pygame.draw.rect(image, self.col, (25, 15, 5, 10))
         return image
 
     def destroy(self, amount):
         """Plays the destruction sound of the enemy ship, returns true if enemy is destroyed"""
         self.health -= amount
+        self.health_bar.update_bar(self.health, self.total)
         if self.health <= 0:
             self.kill()
+            self.health_bar.kill()
             ran = random.randint(1, 12)
             if ran == 1:
                 self.parent.items.add(HealthPack(self.rect.x, self.rect.y, 2))
@@ -595,9 +646,16 @@ class Enemy(pygame.sprite.Sprite):
         return False
 
     def move(self, dirx, diry=0):
-        """Moves the enemy ship and associated healthbar in either the x and/or the y direction"""
+        """Moves the enemy ship and associated healthbar in either the x and/or the y direction
+        if it moves pass below screen, returns False
+        """
         self.rect.x += dirx
         self.rect.y += diry
+        self.health_bar.move(self.rect.x, self.rect.y + self.height + 2)
+        if self.rect.y > self.screen.get_height():
+            return False
+        else:
+            return True
         #self.health.move(self.rect.x, self.rect.y+self.height+2)
 
     def getx(self):
@@ -621,6 +679,7 @@ class Enemy(pygame.sprite.Sprite):
         return self.pos
 
 class Orb(pygame.sprite.Sprite):
+    """Represents the orbs which circulate the player ship forming a shield"""
     def __init__(self, player, startangle):
         pygame.sprite.Sprite.__init__(self)
         self.image = self._draw_orb()
@@ -634,3 +693,18 @@ class Orb(pygame.sprite.Sprite):
     def update(self, time):
         self.rect.centerx = self.player.getx() + 30*math.cos(time+self.angle)
         self.rect.centery = self.player.gety() + 30*math.sin(time+self.angle)
+
+class OrbBullet(Orb):
+    """Orb which is ejected from the ship and converted to a bullet"""
+    def __init__(self, x, y):
+        Orb.__init__(self, 0, 0)
+        self.rect.centerx = x
+        self.rect.centery = y
+
+    def update(self):
+        self.rect.y -= 2
+        if self.rect.y < 0:
+            self.kill()
+
+    def get_amount(self):
+        return 10
