@@ -498,7 +498,8 @@ class EnemyCluster(object):
     def _move_ships(self):
         """Updates the ship's position"""
         for ship in self.enemies.sprites():
-            ship.move(self.dirx, self.diry)
+            if not ship.move(self.dirx, self.diry):
+                self.parent.lose()
         #print self.direction
         self.diry = 0
 
@@ -516,9 +517,7 @@ class EnemyCluster(object):
             if self.center < 0.40*self.screen.get_width():
                 self.dirx = self.speed
                 self.diry = 5
-        if self._move_ships():
-            self.parent.lose()
-
+        self._move_ships()
         self.center += self.dirx
         self._render_health()
         self.enemies.draw(self.screen)
