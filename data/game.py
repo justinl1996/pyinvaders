@@ -222,7 +222,7 @@ class Game(object):
                                                           20, textmsg.increase(amount), colour.J_GREEN))
                         else:
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, textmsg.Max.dual, colour.J_GREEN))
+                                                          20, textmsg.Max.ammo, colour.J_GREEN))
 
                 elif str(item) == "spread":
                     if "spread" not in self._player.get_all_weapons():
