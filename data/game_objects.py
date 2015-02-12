@@ -333,8 +333,7 @@ class BulletDown(Bullet):
             self.kill()
 
     def get_amount(self):
-        self._amount = 20
-        return self._amount
+        return 20
 
 class HealthPack(BulletDown):
     """Class HealthPack inherits from BulletDown"""
@@ -346,14 +345,7 @@ class HealthPack(BulletDown):
         return "health"
 
     def get_amount(self):
-        self._amount = random.randint(5, 10)
-        return self._amount
-
-    def get_text1(self):
-        """Returns the text to be displayed on obtaining this object
-        Precondition self.get_amount() has been called prior
-        """
-        return "+" + str(self._amount)
+        return random.randint(5, 10)
 
 class RocketDrop(BulletDown):
     def _draw_bullet(self):
@@ -364,17 +356,7 @@ class RocketDrop(BulletDown):
         return "rocketitem"
 
     def get_amount(self):
-        self._amount = 3
-        return self._amount
-
-    def get_text1(self):
-        return "Rocket Launcher Obtained"
-
-    def get_text2(self):
-        return "+" + str(self._amount)
-
-    def get_text3(self):
-        return "Rockets at Max"
+        return 3
 
 
 class AmmoPack(BulletDown):
@@ -387,15 +369,7 @@ class AmmoPack(BulletDown):
 
     def get_amount(self):
         """Returns a random amount of ammo"""
-        self._amount = random.randint(5, 15)
-        return self._amount
-
-    def get_text1(self):
-        return "+" + str(self._amount)
-
-    def get_text2(self):
-        return "Ammo at Max"
-
+        return random.randint(5, 15)
 
 class SpeedBoost(BulletDown):
     def _draw_bullet(self):
@@ -406,14 +380,7 @@ class SpeedBoost(BulletDown):
 
     def get_amount(self):
         """Return the boost in speed value"""
-        self._amount = 1
-        return self._amount
-
-    def get_text1(self):
-        return "+" + str(self._amount) + " speed"
-
-    def get_text2(self):
-        return "Speed at Max"
+        return 1
 
 class DualBullet(BulletDown):
     def _draw_bullet(self):
@@ -424,17 +391,7 @@ class DualBullet(BulletDown):
         return "dual"
 
     def get_amount(self):
-        self._amount = 15
-        return self._amount
-
-    def get_text1(self):
-        return "Dual Rail Gun Attachment Obtained"
-
-    def get_text2(self):
-        return "+" + str(self._amount)
-
-    def get_text3(self):
-        return "Ammo at Max"
+        return 15
 
 class SpreadBullet(BulletDown):
     def _draw_bullet(self):
@@ -445,17 +402,7 @@ class SpreadBullet(BulletDown):
         return "spread"
 
     def get_amount(self):
-        self._amount = 30
-        return self._amount
-
-    def get_text1(self):
-        return "Wide Shot Canon Obtained"
-
-    def get_text2(self):
-        return "+" + str(self._amount)
-
-    def get_text3(self):
-        return "Ammo at Max"
+        return 30
 
 class ShieldItem(BulletDown):
     def _draw_bullet(self):
@@ -465,12 +412,8 @@ class ShieldItem(BulletDown):
     def __str__(self):
         return "orb"
 
-    def get_text1(self):
-        """Returns the text to display when item is shield drop is obtained"""
-        return "1+ Shield"
-
-    def get_text2(self):
-        return "Shield at Max"
+    def get_amount(self):
+        return 1
 
 class EnemyCluster(object):
     """ This class groups together enemy ships, it is automatically populated"""

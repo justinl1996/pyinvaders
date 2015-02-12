@@ -9,4 +9,8 @@ class Max:
     rocket = "Rockets at Max"
     ammo = "Ammo at Max"
     shield = "Shield at Max"
+    speed = "Speed at Max"
+
+increase = lambda amount: "+ " + str(amount)
+decrease = lambda amount: "- " + str(amount)
 

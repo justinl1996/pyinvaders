@@ -1,11 +1,13 @@
 import interface
 import colour
 import game_objects
-
-__author__ = 'justin'
 import pygame
 import time
 import random
+import textmsg
+
+__author__ = 'justin'
+
 
 
 class Game(object):
@@ -177,15 +179,15 @@ class Game(object):
                     self.sound.play_powerup("health")
                     self._player.add_health(amount)
                     self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.GREEN))
+                                                          20, textmsg.increase(amount), colour.GREEN))
                 elif str(item) == "ammo":
                     self.sound.play_powerup("ammo")
                     if self._player.add_ammo('bullet', amount):
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.J_GREEN))
+                                                          20, textmsg.increase(amount), colour.J_GREEN))
                     else:
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text2(), colour.J_GREEN))
+                                                          20, textmsg.Max.ammo, colour.J_GREEN))
 
                 elif str(item) == "rocketitem":
                     if "rocket" not in self._player.get_all_weapons():
@@ -194,15 +196,15 @@ class Game(object):
                         self._player.set_weapon("rocket")
                         #self._statusTop.new_equip()
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                        20, item.get_text1(), colour.GREY))
+                                                        20, textmsg.NewWeapon.rocket, colour.GREY))
                     else:
                         self.sound.play_powerup("ammo")
                         if self._player.add_ammo("rocket", amount):
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                        20, item.get_text2(), colour.GREY))
+                                                        20, textmsg.increase(amount), colour.GREY))
                         else:
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                        20, item.get_text3(), colour.GREY))
+                                                        20, textmsg.Max.rocket, colour.GREY))
 
                 elif str(item) == "dual":
                     if "dual" not in self._player.get_all_weapons():
@@ -211,16 +213,16 @@ class Game(object):
                         self._player.set_weapon("dual")
                         #self._statusTop.new_equip()
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.RED))
+                                                          20, textmsg.NewWeapon.dual, colour.RED))
 
                     else:
                         self.sound.play_powerup("ammo")
                         if self._player.add_ammo("bullet", 20):
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text2(), colour.J_GREEN))
+                                                          20, textmsg.increase(amount), colour.J_GREEN))
                         else:
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text3(), colour.J_GREEN))
+                                                          20, textmsg.Max.dual, colour.J_GREEN))
 
                 elif str(item) == "spread":
                     if "spread" not in self._player.get_all_weapons():
@@ -229,34 +231,34 @@ class Game(object):
                         self._player.set_weapon("spread")
                         #self._statusTop.new_equip()
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.BLUE))
+                                                          20, textmsg.NewWeapon.spread, colour.BLUE))
                     else:
                         self.sound.play_powerup("ammo")
                         if self._player.add_ammo("spread", amount):
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text2(), colour.BLUE))
+                                                          20, textmsg.increase(amount), colour.BLUE))
                         else:
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text3(), colour.BLUE))
+                                                          20, item.Max.ammo, colour.BLUE))
 
                 elif str(item) == "speed":
                     self.sound.play_powerup("speed")
                     if self._player.add_speed():
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.YELLOW))
+                                                          20, textmsg.increase(amount) + " speed", colour.YELLOW))
                     else:
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text2(), colour.YELLOW))
+                                                          20, textmsg.Max.speed, colour.YELLOW))
 
 
                 elif str(item) == "orb":
                     self.sound.play_powerup("shield")
                     if self._player.add_orb():
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text1(), colour.WHITE))
+                                                          20, textmsg.increase(amount) + " shield", colour.WHITE))
                     else:
                         self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.get_text2(), colour.WHITE))
+                                                          20, textmsg.Max.shield, colour.WHITE))
         if collide_enemyplayer:         #Enemy ship collides with the player ship
             self._player.take_damage(100)
 
