@@ -1,8 +1,9 @@
 import sprites
 import colour
-
-__author__ = 'justin'
 import pygame
+import sys
+__author__ = 'justin'
+
 
 
 class HealthBar(pygame.sprite.Sprite):
@@ -194,5 +195,31 @@ class SoundEffects(object):
     def set_on(self, setting):
         self.on = setting
 
+class Info(object):
+    """class representing the infomation box on top right of menu"""
+    def __init__(self, version):
+        self.screen_init()
+        self._version = str(version)
+        self._pyver = ""
+        self._platform = ""
+        self._get_info()
 
+    def screen_init(self):
+        """Initialize text location on screen, call if screen is resized"""
+        self.screen = pygame.display.get_surface()
+        self.s_width = self.screen.get_width()
+        self.s_height = self.screen.get_height()
+        self._name = Text(self.s_width * 0.75, self.s_height *0.02, 15, colour.WHITE)
+        self._pytext = Text(self.s_width * 0.75, self.s_height *0.04, 15, colour.WHITE)
+        self._plattext = Text(self.s_width * 0.75, self.s_height *0.06, 15, colour.WHITE)
 
+    def _get_info(self):
+        """Retrieves python version + platform info"""
+        self._pyver = sys.version.split()[0]
+        self._platform = sys.platform
+
+    def render(self):
+        """Draws text on screen"""
+        self._name.render("PyInvaders v{0} By Justin Luong".format(self._version))
+        self._pytext.render("Detected Python Version: " + self._pyver)
+        self._plattext.render("Platform: " + self._platform)

@@ -180,9 +180,12 @@ class Game(object):
                                                           20, item.get_text1(), colour.GREEN))
                 elif str(item) == "ammo":
                     self.sound.play_powerup("ammo")
-                    self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                    if self._player.add_ammo('bullet', amount):
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                           20, item.get_text1(), colour.J_GREEN))
-                    self._player.add_ammo('bullet', amount)
+                    else:
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                          20, item.get_text2(), colour.J_GREEN))
 
                 elif str(item) == "rocketitem":
                     if "rocket" not in self._player.get_all_weapons():
@@ -194,9 +197,13 @@ class Game(object):
                                                         20, item.get_text1(), colour.GREY))
                     else:
                         self.sound.play_powerup("ammo")
-                        self._player.add_ammo("rocket", amount)
-                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                        if self._player.add_ammo("rocket", amount):
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                         20, item.get_text2(), colour.GREY))
+                        else:
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                        20, item.get_text3(), colour.GREY))
+
                 elif str(item) == "dual":
                     if "dual" not in self._player.get_all_weapons():
                         self.sound.play_powerup("weapon")
@@ -208,9 +215,12 @@ class Game(object):
 
                     else:
                         self.sound.play_powerup("ammo")
-                        self._player.add_ammo("bullet", 20)
-                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                        if self._player.add_ammo("bullet", 20):
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                           20, item.get_text2(), colour.J_GREEN))
+                        else:
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                          20, item.get_text3(), colour.J_GREEN))
 
                 elif str(item) == "spread":
                     if "spread" not in self._player.get_all_weapons():
@@ -222,21 +232,31 @@ class Game(object):
                                                           20, item.get_text1(), colour.BLUE))
                     else:
                         self.sound.play_powerup("ammo")
-                        self._player.add_ammo("spread", amount)
-                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                        if self._player.add_ammo("spread", amount):
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                           20, item.get_text2(), colour.BLUE))
+                        else:
+                            self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                          20, item.get_text3(), colour.BLUE))
 
                 elif str(item) == "speed":
                     self.sound.play_powerup("speed")
-                    self._player.add_speed()
-                    self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                    if self._player.add_speed():
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                           20, item.get_text1(), colour.YELLOW))
+                    else:
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                          20, item.get_text2(), colour.YELLOW))
+
 
                 elif str(item) == "orb":
                     self.sound.play_powerup("shield")
-                    self._player.add_orb()
-                    self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                    if self._player.add_orb():
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
                                                           20, item.get_text1(), colour.WHITE))
+                    else:
+                        self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
+                                                          20, item.get_text2(), colour.WHITE))
         if collide_enemyplayer:         #Enemy ship collides with the player ship
             self._player.take_damage(100)
 

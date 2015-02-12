@@ -122,9 +122,12 @@ class Ship(pygame.sprite.Sprite):
         """Increments the player's ammunition"""
         if self._ammo[weapon] + amount < self._ammo_limits[weapon]:
             self._ammo[weapon] += amount
+            self._update_ammo()
+            return True
         else:
             self._ammo[weapon] = self._ammo_limits[weapon]
-        self._update_ammo()
+            self._update_ammo()
+            return False
 
 
     def decrement_ammo(self, amount, weapon):
@@ -179,9 +182,12 @@ class Ship(pygame.sprite.Sprite):
         return self._speed
 
     def add_speed(self):
-        """Increments the speed by 1 provided self._speed < 10  """
+        """Increments the speed by 1. if self._speed < 10 returns True, else False """
         if self._speed < 10:
             self._speed += 1
+            return True
+        else:
+            return False
 
     def eject_orb(self):
         """Ramdomly selects an orb to be ejected from the ship"""
@@ -193,10 +199,13 @@ class Ship(pygame.sprite.Sprite):
             self._orb_count -= 1
 
     def add_orb(self):
-        """Adds an additional orb to circulate the ship"""
+        """Adds an additional orb to circulate the ship. Returns True if orb_count < 6, else False"""
         if self._orb_count < 6:
             self._orb_count += 1
             self._orb_reset()
+            return True
+        else:
+            return False
 
     def delete_orb(self):
         """Deletes an orb"""
@@ -364,6 +373,9 @@ class RocketDrop(BulletDown):
     def get_text2(self):
         return "+" + str(self._amount)
 
+    def get_text3(self):
+        return "Rockets at Max"
+
 
 class AmmoPack(BulletDown):
     """Class AmmoPack inherits from BulletDown"""
@@ -381,6 +393,9 @@ class AmmoPack(BulletDown):
     def get_text1(self):
         return "+" + str(self._amount)
 
+    def get_text2(self):
+        return "Ammo at Max"
+
 
 class SpeedBoost(BulletDown):
     def _draw_bullet(self):
@@ -396,6 +411,9 @@ class SpeedBoost(BulletDown):
 
     def get_text1(self):
         return "+" + str(self._amount) + " speed"
+
+    def get_text2(self):
+        return "Speed at Max"
 
 class DualBullet(BulletDown):
     def _draw_bullet(self):
@@ -415,6 +433,9 @@ class DualBullet(BulletDown):
     def get_text2(self):
         return "+" + str(self._amount)
 
+    def get_text3(self):
+        return "Ammo at Max"
+
 class SpreadBullet(BulletDown):
     def _draw_bullet(self):
         """draws the spread bullet drop"""
@@ -433,6 +454,9 @@ class SpreadBullet(BulletDown):
     def get_text2(self):
         return "+" + str(self._amount)
 
+    def get_text3(self):
+        return "Ammo at Max"
+
 class ShieldItem(BulletDown):
     def _draw_bullet(self):
         """draws the spread bullet drop"""
@@ -444,6 +468,9 @@ class ShieldItem(BulletDown):
     def get_text1(self):
         """Returns the text to display when item is shield drop is obtained"""
         return "1+ Shield"
+
+    def get_text2(self):
+        return "Shield at Max"
 
 class EnemyCluster(object):
     """ This class groups together enemy ships, it is automatically populated"""

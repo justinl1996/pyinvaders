@@ -12,6 +12,7 @@ class Menu(object):
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
+        self.clock = pygame.time.Clock()
         self.s_width = SCREEN_SIZE[0]
         self.s_height = SCREEN_SIZE[1]
         self.sound = interface.SoundEffects()
@@ -19,13 +20,12 @@ class Menu(object):
         self._option_on = False
         self._title = image.Image("img/title.png", self.s_width/2, 0.25*self.s_height)
         self._instruction = image.Image("img/controls.png", self.s_width*0.6, 0.75*self.s_height)
+        self._info = interface.Info(1.1)
         self._menu_init()
         self._stars = []
-        self._mytext = interface.Text(self.s_width * 0.75, self.s_height *0.02, 15, colour.WHITE)
-        self._pyinfo = interface.Text(self.s_width * 0.75, self.s_height *0.04, 15, colour.WHITE)
         self._bg_init()
         self._enemy_col = colour.BLUE
-        self.clock = pygame.time.Clock()
+
 
     def _menu_init(self):
         text = [menu_item.MenuSelect("Play", self._play, 30),
@@ -69,9 +69,7 @@ class Menu(object):
         self._option_menu.reset()
         self._instruction_menu.reset()
         self._title.reset_pos(self.s_width/2, self.s_height*0.25)
-        self._mytext = interface.Text(self.s_width * 0.75, self.s_height *0.02, 15, colour.WHITE)
-        self._pyinfo = interface.Text(self.s_width * 0.75, self.s_height *0.04, 15, colour.WHITE)
-
+        self._info.screen_init()
         self._bg_init()
 
 
@@ -156,14 +154,15 @@ class Menu(object):
                         else:
                             self.main_menu.run()
             self._bg_update()
-            self._mytext.render("PyInvaders v1.1 By Justin Luong")
-            self._pyinfo.render("Python 2.7.3")
             self._title.render()
+
             if self._option_on:
                 self._option_menu.update()
             elif self._instruction_on:
                 self._instruction_menu.update()
                 self._instruction.render()
+
+            self._info.render()
             self.main_menu.update()
             self.clock.tick(80)
             pygame.display.update()
