@@ -562,9 +562,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, parent, pos, health_bar):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.get_surface()
-        self.col = parent.colour
-        self.image = self._draw_sprite()
-        #pygame.draw.rect(self.image, colour.BLUE, (0,0,width,height))
+        self.image = sprites.enemy(parent.colour)
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
@@ -576,18 +574,6 @@ class Enemy(pygame.sprite.Sprite):
         self.health_bar.update_bar(self.health, self.total)
         self.parent = parent
         self.pos = pos    #Position in list in terms for row and column
-
-
-    def _draw_sprite(self):
-        #col = colour.PURPLE
-        image = pygame.Surface([30, 25], pygame.SRCALPHA)
-        pygame.draw.rect(image, self.col, (5, 0, 20, 20))
-        pygame.draw.rect(image, colour.BLACK, (7, 5, 4, 4))
-        pygame.draw.rect(image, colour.BLACK, (19, 5, 4, 4))
-        pygame.draw.rect(image, colour.BLACK, (10, 13, 10, 4))
-        pygame.draw.rect(image, self.col, (0, 15, 5, 15))
-        pygame.draw.rect(image, self.col, (25, 15, 5, 10))
-        return image
 
     def destroy(self, amount):
         """Plays the destruction sound of the enemy ship, returns true if enemy is destroyed"""

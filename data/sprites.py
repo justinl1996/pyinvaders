@@ -13,6 +13,17 @@ def ship():
     pygame.draw.polygon(image, colour.BLUE, [(0, 15), (15, 0), (15, 15)])
     return image
 
+def enemy(col):
+    """Invader"""
+    image = pygame.Surface([30, 25], pygame.SRCALPHA)
+    pygame.draw.rect(image, col, (5, 0, 20, 20))
+    pygame.draw.rect(image, colour.BLACK, (7, 5, 4, 4))
+    pygame.draw.rect(image, colour.BLACK, (19, 5, 4, 4))
+    pygame.draw.rect(image, colour.BLACK, (10, 13, 10, 4))
+    pygame.draw.rect(image, col, (0, 15, 5, 15))
+    pygame.draw.rect(image, col, (25, 15, 5, 10))
+    return image
+
 def rocket():
     """Rocket weapon"""
     image = pygame.Surface([16,30], pygame.SRCALPHA)
