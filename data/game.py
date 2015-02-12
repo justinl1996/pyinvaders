@@ -239,7 +239,7 @@ class Game(object):
                                                           20, textmsg.increase(amount), colour.BLUE))
                         else:
                             self._text.append(interface.ScrollText(self._player.getx(), self._player.get_topy(),
-                                                          20, item.Max.ammo, colour.BLUE))
+                                                          20, textmsg.Max.ammo, colour.BLUE))
 
                 elif str(item) == "speed":
                     self.sound.play_powerup("speed")
