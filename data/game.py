@@ -5,10 +5,8 @@ import pygame
 import time
 import random
 import textmsg
-
+import score
 __author__ = 'justin'
-
-
 
 class Game(object):
     """Class which handles the entire game"""
@@ -27,28 +25,18 @@ class Game(object):
         self._enemy_cluster = game_objects.EnemyCluster(self, 1, col)
         self._status = True
         self._text = []
-        self._stars = [[random.randrange(0, self._width-1), random.randrange(0, self._height-1),
-                       random.randrange(1, 4)] for _ in range(256)]
-        self._bg_update()
+        self._bg = interface.StarBackground()
+        self._bg.update()
         self._new_level(1)
 
     def _init_interface(self):
         health = interface.HealthBar2(self._width*0.75, self._height*0.02, 175, 18)
         ammo = interface.AmmoBar(self._width*0.50, self._height*0.02, 175, 18)
         equip = interface.Equip(self._width*0.30, self._height*0.02)
-        self._score = interface.Score(self._width*0.07, self._height*0.02)
+        self._score = score.Score(self._width*0.07, self._height*0.02)
         self._player = game_objects.Ship(self, health, ammo, equip)
         self._statusTop = interface.TopStatusBar(health, ammo, equip, self._score)
 
-    def _bg_update(self):
-        """Redraws the background, run this prior to drawing game objects"""
-        self.screen.fill(colour.BLACK)
-        for star in self._stars:
-            if star[2] + star[1] > self._height:
-                star[1] = 0
-            else:
-                star[1] += star[2]
-            self.screen.set_at((star[0], star[1]), colour.WHITE)
 
     def _text_update(self):
         """Updates all scrolling Text and removes them if necessary"""
@@ -94,7 +82,7 @@ class Game(object):
             gameover_text.render("GAME OVER")
             key_text.render("Press Enter to Continue")
             pygame.display.update()
-
+        score.ScoreScreen(self.sound, self._score.get_score()).enter_score()
 
     def _pause(self):
         """Pauses the game (freeze game state) until player presses p"""
@@ -284,7 +272,7 @@ class Game(object):
                         self._player.change_weapon()
                     elif event.key == pygame.K_c:
                         self._player.eject_orb()
-            self._bg_update()
+            self._bg.update()
             self._text_update()
             self._player_sprite.draw(self.screen)
             self._statusTop.update()

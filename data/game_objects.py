@@ -264,9 +264,6 @@ class DotWeapon(Bullet):
     def _draw_bullet(self):
         return sprites.dotbullet()
 
-    def play_sound(self):
-        pygame.mixer.Sound("sounds/Laser_Shoot.wav").play()
-
     def get_amount (self):
         return 2
 

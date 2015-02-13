@@ -60,14 +60,14 @@ class MenuSelect(object):
         return self._func()
 
 class BasicMenu(object):
-    def __init__(self, menuitems, s_loc, sound):
+    def __init__(self, menuitems, s_loc, h_spacing, v_spacing):
         self._screen = pygame.display.get_surface()
-        self._v_spacing = int(self._screen.get_height()*0.1)
+        self._v_spacing = v_spacing
+        self._h_spacing = h_spacing
         self._menuitems = menuitems
         self._s_loc = s_loc     #location on screen by ratio
-        self._topleft = (s_loc[0]*self._screen.get_width(), s_loc[1]*self._screen.get_height()/2)
+        self._topleft = (s_loc[0]*self._screen.get_width(), s_loc[1]*self._screen.get_height())
         self._sel = [0, 0]
-        self.sound = sound
         self._mark = []
 
 
@@ -110,7 +110,7 @@ class BasicMenu(object):
             for x, text in enumerate(y):
                 img = text.get_image()
                 self._screen.blit(img, (prev, starty + i*self._v_spacing))
-                prev += img.get_width() + 40
+                prev += img.get_width() + self._h_spacing
 
     def move_up(self, dir):
         """Moves the position of menu selection up (dir=1) or down (dir=-1)"""
@@ -148,10 +148,9 @@ class BasicMenu(object):
         self._draw_items()
 
 
-
 class OptionList(BasicMenu):
-    def __init__(self, menuitems, titles, topleft, sound):
-        BasicMenu.__init__(self, menuitems, topleft, sound)
+    def __init__(self, menuitems, titles, topleft, h_spacing, v_spacing):
+        BasicMenu.__init__(self, menuitems, topleft, h_spacing, v_spacing)
         self._titles = titles
         self._textob = []
         self._init_text()
@@ -178,16 +177,15 @@ class OptionList(BasicMenu):
             for x, text in enumerate(y):
                 img = text.get_image()
                 self._screen.blit(img, (prev, starty + i*self._v_spacing))
-                prev += img.get_width() + 40
+                prev += img.get_width() + self._h_spacing
 
 class MenuList(object):
-    def __init__(self, menuitems, s_loc, sound):
+    def __init__(self, menuitems, s_loc):
         self._screen = pygame.display.get_surface()
         self._menuitems = menuitems
         self._s_loc = s_loc
         self._topleft = self._topleft = (s_loc[0]*self._screen.get_width(), s_loc[1]*self._screen.get_height()/2)
         self._sel = 0
-        self.sound = sound
         self._menuitems[self._sel].set_selected()
 
     def reset(self):

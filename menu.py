@@ -1,10 +1,10 @@
 import pygame
-import random
 from data import colour
 from data import menu_item
 from data import interface
 from data import game
 from data import image
+from data import score
 
 SCREEN_SIZE = [1024, 768]
 
@@ -15,6 +15,7 @@ class Menu(object):
         self.clock = pygame.time.Clock()
         self.s_width = SCREEN_SIZE[0]
         self.s_height = SCREEN_SIZE[1]
+        self._bg = interface.StarBackground()
         self.sound = interface.SoundEffects()
         self._instruction_on = False
         self._option_on = False
@@ -22,16 +23,14 @@ class Menu(object):
         self._instruction = image.Image("img/controls.png", self.s_width*0.6, 0.75*self.s_height)
         self._info = interface.Info(1.1)
         self._menu_init()
-        self._stars = []
-        self._bg_init()
         self._enemy_col = colour.BLUE
-
 
     def _menu_init(self):
         text = [menu_item.MenuSelect("Play", self._play, 30),
                      menu_item.MenuSelect("Instructions", self._instructions, 30),
+                     menu_item.MenuSelect("Highscores", self._high_scores, 30),
                      menu_item.MenuSelect("Options", self._options, 30),
-                     menu_item.MenuSelect("Exit", self._exit, 30)]
+                     menu_item.MenuSelect("Exit", self._exit, 30),]
         option_titles = ["Resolution", "Invader Colour", "Sound", "Apply Settings?"]
         options = [[menu_item.MenuSelect("1024x768", lambda: self.screen_reset(1024, 768), 20),
                          menu_item.MenuSelect("1280x1024", lambda: self.screen_reset(1280, 1024), 20),
@@ -45,20 +44,13 @@ class Menu(object):
                         [menu_item.MenuSelect("OK", self._options_OK, 20),
                          menu_item.MenuSelect("Cancel", self._options_cancel, 20)]]
         instructions = [[menu_item.MenuSelect("OK", self._instruction_OK, 20)]]
-        self._instruction_menu = menu_item.BasicMenu(instructions, (0.8, 0.8), self.sound)
-        self._option_menu = menu_item.OptionList(options, option_titles, (0.4, 0.6), self.sound)
-        self.main_menu = menu_item.MenuList(text, (0.1, 0.6), self.sound)
+        self._instruction_menu = menu_item.BasicMenu(instructions, (0.8, 0.8), 50, 40)
+        self._option_menu = menu_item.OptionList(options, option_titles, (0.4, 0.6), 50, 40)
+        self.main_menu = menu_item.MenuList(text, (0.1, 0.5))
         self._instruction_menu.set_first([0, 0])
         self._opt_settings = [[0, 0], [0, 1], [0, 2]]
         self._option_menu.set_defaults(self._opt_settings)
         self._option_menu.set_first([0, 0])
-
-    def _bg_init(self):
-        """Populate a list containing white pixel at random locations with random speed
-        call to initialize background after screen dimensions have been reset
-        """
-        self._stars = [[random.randrange(0, self.s_width-1), random.randrange(0, self.s_height-1),
-                       random.randrange(1, 4)] for _ in range(256)]
 
     def screen_reset(self, width, height):
         """Resets the video display"""
@@ -70,7 +62,7 @@ class Menu(object):
         self._instruction_menu.reset()
         self._title.reset_pos(self.s_width/2, self.s_height*0.25)
         self._info.screen_init()
-        self._bg_init()
+        self._bg.init_bg()
 
 
     def _bg_update(self):
@@ -85,11 +77,13 @@ class Menu(object):
 
     def _play(self):
         game.Game(self.screen, self.sound, self._enemy_col).run()
-        return 0
 
     def _instructions(self):
         self._option_on = False
         self._instruction_on = True
+
+    def _high_scores(self):
+        score.ScoreScreen(self.sound).high_score()
 
     def _options(self):
         self._instruction_on = False
@@ -106,8 +100,6 @@ class Menu(object):
 
     def _options_OK(self):
         self._option_on = False
-        #self._option_menu.clear_selections()
-        #print self._option_menu.get_settings()
         self._opt_settings = self._option_menu.get_settings()
 
     def _options_cancel(self):
@@ -153,7 +145,7 @@ class Menu(object):
                             self._instruction_menu.run()
                         else:
                             self.main_menu.run()
-            self._bg_update()
+            self._bg.update()
             self._title.render()
 
             if self._option_on:

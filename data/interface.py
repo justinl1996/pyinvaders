@@ -2,8 +2,34 @@ import sprites
 import colour
 import pygame
 import sys
+import random
 __author__ = 'justin'
 
+class StarBackground(object):
+    def __init__(self):
+        self.screen = 0
+        self._width = 0
+        self._height = 0
+        self._stars = []
+        self.init_bg()
+
+    def init_bg(self):
+        """Populates the a list with lists containing random x,y coordinates + speed value (ie. stars)"""
+        self.screen = pygame.display.get_surface()
+        self._width = self.screen.get_width()
+        self._height = self.screen.get_height()
+        self._stars = [[random.randrange(0, self._width-1), random.randrange(0, self._height-1),
+                       random.randrange(1, 4)] for _ in range(256)]
+
+    def update(self):
+        """Redraws the background, run this prior to drawing game objects"""
+        self.screen.fill(colour.BLACK)
+        for star in self._stars:
+            if star[2] + star[1] > self._height:
+                star[1] = 0
+            else:
+                star[1] += star[2]
+            self.screen.set_at((star[0], star[1]), colour.WHITE)
 
 
 class HealthBar(pygame.sprite.Sprite):
@@ -89,6 +115,10 @@ class Text(object):
         self.y = y
         self.colour = col
 
+    def set_y(self, y):
+        """Call to reset y position of text surface"""
+        self.y = y
+
     def render(self, text):
         """Redraws the text, call this to update"""
         text_sf = self.font_ob.render(text, True, self.colour)
@@ -99,19 +129,6 @@ class ArcadeText(Text):
     def __init__(self, x, y, size, col):
         Text.__init__(self, x, y, size, col)
         self.font_ob = pygame.font.Font('font/ka1.ttf', size)
-
-class Score(object):
-    def __init__(self, x, y):
-        self._score = 0
-        self._text = ArcadeText(x, y, 20, colour.GREEN)
-        self.update_score()
-
-    def update_score(self, amount=0):
-        self._score += amount
-        self._text.render("Score: " + str(self._score))
-
-    def render(self):
-        self._text.render("Score: " + str(self._score))
 
 class TextCenter(ArcadeText):
     """Inherits from ArcadeText, TextCenter automatically center aligns text"""
