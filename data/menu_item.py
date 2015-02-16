@@ -21,6 +21,14 @@ class MenuSelect(object):
         """Returns the text surface"""
         return self._image
 
+    def get_width(self):
+        """Returns the width of the image surface"""
+        return self._image.get_width()
+
+    def get_height(self):
+        """Returns the height of the image surface"""
+        return self._image.get_height()
+
     def set_notselected(self):
         """Set the text colour to be unselected, unless it has been previously marked (white colour)"""
         if self._mark:
@@ -67,6 +75,9 @@ class BasicMenu(object):
         self._menuitems = menuitems
         self._s_loc = s_loc     #location on screen by ratio
         self._topleft = (s_loc[0]*self._screen.get_width(), s_loc[1]*self._screen.get_height())
+        #(self._menu_width, self._menu_height) = self.get_dimensions()
+        self._surface = pygame.Surface(self.get_dimensions(), pygame.SRCALPHA)
+        #print self.get_dimensions()
         self._sel = [0, 0]
         self._mark = []
 
@@ -94,23 +105,37 @@ class BasicMenu(object):
         """Returns a list containing the selections which have been marked"""
         return self._mark
 
+    def get_dimensions(self):
+        """Get the dimensions of the menu items will consume"""
+        width = 0
+        max_width = 0
+        height = (len(self._menuitems)-1)*self._v_spacing + len(self._menuitems)*self._menuitems[0][0].get_height()
+        for i, row in enumerate(self._menuitems):
+            width = (len(self._menuitems[i])-1)*self._h_spacing
+            for x in row:
+                width += x.get_width()
+            if width > max_width:
+                max_width = width
+        return max_width, height
+
     def reset(self):
         """Call to reset positioning of menu after screen size is reset"""
         self._screen = pygame.display.get_surface()
         self._topleft = (self._s_loc[0]*self._screen.get_width(), self._s_loc[1]*self._screen.get_height())
-        self._v_spacing = int(self._screen.get_height()*0.1)
+        #self._v_spacing = int(self._screen.get_height()*0.1)
 
 
     def _draw_items(self):
         """Draws the selections and titles to screen"""
-        startx, starty = self._topleft[0], self._topleft[1]
+        #startx, starty = self._topleft[0], self._topleft[1]
         for i, y in enumerate(self._menuitems):
-            #self._textob[i].render(self._titles[i])
-            prev = startx
+            prev = 0
             for x, text in enumerate(y):
                 img = text.get_image()
-                self._screen.blit(img, (prev, starty + i*self._v_spacing))
+                self._surface.blit(img, (prev, i*self._v_spacing))
                 prev += img.get_width() + self._h_spacing
+        topcorner = (self._topleft[0] -self._surface.get_width()/2, self._topleft[1])
+        self._screen.blit(self._surface, topcorner)
 
     def move_up(self, dir):
         """Moves the position of menu selection up (dir=1) or down (dir=-1)"""
@@ -164,7 +189,7 @@ class OptionList(BasicMenu):
         """Call to reset positioning"""
         self._screen = pygame.display.get_surface()
         self._topleft = (int(self._s_loc[0]*self._screen.get_width()), int(self._s_loc[1]*self._screen.get_height()))
-        self._v_spacing = int(self._screen.get_height()*0.1)
+        #self._v_spacing = int(self._screen.get_height()*0.1)
         self._init_text()
 
 

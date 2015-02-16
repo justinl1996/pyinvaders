@@ -69,7 +69,7 @@ class ScoreScreen(object):
         self._paused = False
 
     def _clear_score(self):
-        clear_score("data/highscores.txt")
+        clear_score("highscores.txt")
         self.high_score()
 
     def enter_score(self):
@@ -89,7 +89,7 @@ class ScoreScreen(object):
                     elif key == "backspace":
                         name = name[:-1]
                     elif key == "return":
-                        write_score("data/highscores.txt", [name, self._score])
+                        write_score("highscores.txt", [name, self._score])
                         self._paused = False
                         break
             self._bg.update()
@@ -101,10 +101,10 @@ class ScoreScreen(object):
         self.high_score()
 
     def high_score(self):
-        data = read_score("data/highscores.txt")[:10]
+        data = read_score("highscores.txt")[:10]
         items = [[menu_item.MenuSelect("Clear", self._clear_score, 20),
                       menu_item.MenuSelect("OK", self._OK, 20)]]
-        selection = menu_item.BasicMenu(items, (0.35, 0.9), 140, 0)
+        selection = menu_item.BasicMenu(items, (0.5, 0.5), 150, 0)
         selection.set_first([1, 0])
         self._paused = True
         while self._paused:
